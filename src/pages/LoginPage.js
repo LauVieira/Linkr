@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
-import ReactDOM from 'react-dom';
-import { Link,useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import styled from 'styled-components';
 import UserContext from '../contexts/UserContext'
@@ -13,11 +12,7 @@ export default function LoginPage () {
     const [password,setPassword] = useState('');
     const [username,setUsername] = useState('');
     const [pictureUrl,setPictureUrl] = useState('');
-    let history = useHistory();// <<<<<<-------------------
-
-    //function switchSignUp () { // <<<<<<-------------------
-    //    setSignUp(!signUp);
-   // }
+    let history = useHistory();
 
 
     function validateForm () {
@@ -40,7 +35,7 @@ export default function LoginPage () {
     }
 
 
-    function processRequest () {                        // <<<<<<-------------------
+    function processRequest () {
         signUp
             ? sendRequest({email, password, username, pictureUrl},'up')
             : sendRequest({email, password},'in'); 
@@ -53,7 +48,7 @@ export default function LoginPage () {
     }
 
 
-    function loginFailed (error) {                    // <<<<<<-------------------
+    function loginFailed (error) {
         setClicked(false);
         const errorCode = error.response.status;
         errorCode === 400 && alert('O e-mail inserido já está cadastrado');           
@@ -61,7 +56,7 @@ export default function LoginPage () {
     }
 
 
-    function loginSucceeded (response) {                    // <<<<<<-------------------
+    function loginSucceeded (response) {
         setUserData({...response.data});
         history.push('/timeline');
     }

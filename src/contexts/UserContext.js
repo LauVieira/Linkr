@@ -10,7 +10,7 @@ export function UserContextProvider (props) {                    // <<<<<<------
     const [userData,setUserData] = useState({});
 
     function headerConfig () {
-        const header = {headers: {"User-Token": userData.token }}
+        const header = {headers: {"user-token": userData.token }}
         return header;
     }
 
