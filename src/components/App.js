@@ -11,40 +11,13 @@ export default function App () {
     return (    
         <Router>
             <Switch>
-                <Route path='/' exact={true} component={LoginPage} />
+                <UserContextProvider>
+                    <Route path='/' exact={true} component={LoginPage} />
+                </UserContextProvider>
             </Switch>
         </Router>
     );
 }
-
-/*
-<Header />
-<MoviesContextProvider>
-    <TicketsContextProvider>
-                */
-
-
-/*
-Formato de envio inscrição:
-
-{ "email": "ademilson@detal.com.br", "password": "123456", "username": "maleskena", "pictureUrl": "https://image.shutterstock.com/image-vector/user-avatar-icon-sign-profile-260nw-1145752283.jpg" }
-
-
-
-
-Formato RESPOSTA inscrição:
-{
-  "token": "494c68f5-c9da-482e-949b-4254e6693f01",
-  "user": {
-    "id": 3,
-    "email": "ademilson@detal.com.br",
-    "username": "maleskena",
-    "avatar": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQIAdgB2AAD/2wCEAAMDA
-}
-*/
-
-
-
 
 
 /* 
