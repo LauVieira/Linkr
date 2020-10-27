@@ -1,18 +1,20 @@
-import React from 'react';
+import React,{ createContext,useContext, useState }from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from 'react-router-dom';
 import LoginPage from '../pages/LoginPage'
-
+import Timeline from '../pages/Timeline'
+import {UserContextProvider} from '../contexts/UserContext'
 
 export default function App () {
     return (    
         <Router>
             <Switch>
                 <UserContextProvider>
-                    <Route path='/' exact={true} component={LoginPage} />
+                    <Route path='/' exact component={LoginPage} />
+                    <Route path='/timeline' exact component={Timeline} />
                 </UserContextProvider>
             </Switch>
         </Router>

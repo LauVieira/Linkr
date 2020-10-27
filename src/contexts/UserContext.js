@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext,useContext, useState } from 'react';
 //import axios from 'axios';
 
 
@@ -6,28 +6,43 @@ const UserContext = createContext();
 export default UserContext;
 
 
-export function UserContextProvider (props) {
+export function UserContextProvider (props) {                    // <<<<<<-------------------
     const [userData,setUserData] = useState({});
+
+    function headerConfig () {
+        const header = {headers: {"User-Token": userData.token }}
+        return header;
+    }
 
 
     return (
-        <UserContext.Provider value = {userData, setUserData}>
+        <UserContext.Provider value = {{userData, setUserData}}>
             {props.children}
         </UserContext.Provider>
     )
 }
 
 
+
 /*
+USER DATA:
+{data: {…}, status: 200, statusText: "OK", headers: {…}, config: {…}, …}
 
-function configurarHeader () {
-    var header = {
-        headers: {
-        "User-Token": tokenUsuario }
-    }
 
-    return header;
-}
+data:
+token: "b1e7b642-890a-4ff2-8b49-dcf982d78ed9"
+user:
+avatar: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD"
+email: "agataivanoff@yahoo.com.br"
+id: 43
+username: "Agata,aGata"
+*/
+
+
+
+
+
+/*
 
 function pedirQuizzes () {
     var header = configurarHeader();

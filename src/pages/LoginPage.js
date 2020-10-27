@@ -13,11 +13,11 @@ export default function LoginPage () {
     const [password,setPassword] = useState('');
     const [username,setUsername] = useState('');
     const [pictureUrl,setPictureUrl] = useState('');
-    
+    let history = useHistory();// <<<<<<-------------------
 
-    function switchSignUp () {
-        setSignUp(!signUp);
-    }
+    //function switchSignUp () { // <<<<<<-------------------
+    //    setSignUp(!signUp);
+   // }
 
 
     function validateForm () {
@@ -25,37 +25,6 @@ export default function LoginPage () {
             ? email.length * password.length * username.length * pictureUrl.length
             : email.length * password.length;
     }
-
-
-    function sendRequest (userObj,goal) {
-        const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/si9gn_${goal}`,userObj);
-        request.then( response => {loginSucceeded(response)} ).catch( response => {loginFailed(response)} );
-    }
-
-
-    function processRequest () {
-        if (signUp) {
-            sendRequest({email, password, username, pictureUrl},'up');
-        }
-        else {
-            sendRequest({email, password},'in');
-        }
-    }
-
-    //http://www.criarmeme.com.br/i/gato-comunista.jpg
-    function loginFailed (response) {
-        setClicked(false);
-        console.log(response.status);
-    }
-
-    function loginSucceeded (response) {
-        setUserData({...response});
-        console.log(response);
-        let history = useHistory();
-        history.push('/timeline');
-        //push history
-    }
-  
 
     function submitForm(event) {
         event.preventDefault();
@@ -70,14 +39,46 @@ export default function LoginPage () {
         }
     }
 
+
+    function processRequest () {                        // <<<<<<-------------------
+        signUp
+            ? sendRequest({email, password, username, pictureUrl},'up')
+            : sendRequest({email, password},'in'); 
+    }
+
+
+    function sendRequest (userObj,goal) {
+        const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/sign_${goal}`,userObj);
+        request.then( response => {loginSucceeded(response)} ).catch( error => {loginFailed(error)} );
+    }
+
+
+    function loginFailed (error) {                    // <<<<<<-------------------
+        setClicked(false);
+        const errorCode = error.response.status;
+        errorCode === 400 && alert('O e-mail inserido já está cadastrado');           
+        errorCode === 401 && alert('E-mail/senha incorretos');
+    }
+
+
+    function loginSucceeded (response) {                    // <<<<<<-------------------
+        setUserData({...response.data});
+        history.push('/timeline');
+    }
+  
+
+    
     return (
         <MainContainer>
+
             <LogoContainer>
                 <h1>linkr</h1>
                 <h2>save, share and discover<br/>the best links on the web</h2>
             </LogoContainer>
+
             <LoginContainer>
                 <form onSubmit={(event) => submitForm(event)}>
+
                     <input type="email" placeholder="e-mail" onChange={(e) => setEmail(e.target.value)} value={email}/>
                     <input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} value={password}/>
 
@@ -89,12 +90,13 @@ export default function LoginPage () {
                         : <button type="submit">Log in</button>  
                     }                  
                 </form>
+
                 {   signUp
-                    ?  <p onClick={switchSignUp}>Switch back to log in</p>
-                    :  <p onClick={switchSignUp}>First time? Create an account!</p> 
+                    ?  <p onClick={() => setSignUp(!signUp)}>Switch back to log in</p>
+                    :  <p onClick={() => setSignUp(!signUp)}>First time? Create an account!</p> 
                 } 
-               
             </LoginContainer>
+
         </MainContainer>
     );
 }
