@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Link,useHistory } from "react-router-dom";
 import axios from 'axios';
@@ -8,7 +8,8 @@ import UserContext from '../contexts/UserContext'
 export default function Timeline () {
     const {userData} = useContext(UserContext);
     const [postsList,setPostsLists] = useState([]);
-    getPostsList();
+
+    useEffect(getPostsList,[]);
 
     function getPostsList () {
         const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts?offset=0&limit=5',{headers: {'user-token': userData.token }});
@@ -16,12 +17,11 @@ export default function Timeline () {
     }
 
     function postsSucceeded (response) {
-        if (response.data.posts.length) {
-            setPostsLists(...response.data.posts);
-        }
-        else {
-            alert('Nenhum post encontrado')
-        }
+        response.data.posts.length
+            ? setPostsLists([...response.data.posts])
+            : alert('Nenhum post encontrado');
+            
+        console.log(response);
     }
 
     function postsFailed () {
@@ -29,37 +29,159 @@ export default function Timeline () {
     }
 
     return (
-        <>
-            {  
+        <TimelinePage>
+             {  
                 postsList.length === 0
-                    ? <h1>Loading</h1>
-                    : postsList.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} />)
-            }
-        </>
+                    ? <Loading><img src='/styles/loading.gif' /><p>Loading, please wait :)</p></Loading>
+                    : 
+                        <feedContainer>
+                            {postsList.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}
+                        </feedContainer>
+                    }
+            
+        </TimelinePage>
     );
 }
 
 
 function LayOutPosts (props) {
-    const {user,text,linkTitle,linkImage,linkDescription,link} = props;
+    const {user,text,linkTitle,linkImage,linkDescription,link} = props.post;
     const {username,avatar} = user;
 
     return (
         <PostContainer>
-            <div className='post-left'>Testando</div>
-            <div className='post-right'></div>
+
+            <div className='post-left'><img src={avatar} /></div>
+
+            <div className='post-right'>
+                <h2>{username}</h2>
+                <p>{text}</p>
+
+                <LinkContainer>
+                    <div>
+                        <h3>{linkTitle}</h3>
+                        <p>{linkDescription}</p>
+                        <a href={link} target='_blank'>{link}</a>
+                    </div>
+                    <img src={linkImage} />
+                </LinkContainer>
+            </div>
+
         </PostContainer>
     );
 }
 
 
-const PostContainer = styled.article`
+const TimelinePage = styled.section`
+    height: 100%;
+    margin-top: 100px;
+    width: 100%;
+`;
+
+
+const Loading = styled.div`
+    align-items: center;
     display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    width: 100vw;
+
+    p {
+        color: #FFF;
+        font: 500 24px 'Passion One', cursive;
+        margin-top: 10px;
+    }
 
 
 `;
 
+const feedContainer = styled.main`
+    align-items: center;
+    color: #FFF;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+   
+`;
 
+
+const PostContainer = styled.article`
+    background: #151515;
+    border-radius: 15px;
+    color: #CECECE;
+    display: flex;
+    font-family: 'Lato', sans-serif;
+    height: 300px;
+    margin-top: 20px;
+    padding: 25px;
+    width: 600px;
+    word-break: break;
+
+
+    .post-left {
+        height: 100%;
+        margin-right: 20px;
+    }
+    .post-left img {
+        border-radius: 50%;
+        height: 50px;
+        width: 50px;
+    }
+
+    .post-right {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: space-between;
+        width: 100%;
+        
+        & > h2 {
+            font-size: 18px;
+            color: #FFF;
+        }
+        & > p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+    }
+`;
+
+const LinkContainer = styled.div`
+    border: 1px solid #CECECE;
+    border-radius: 10px;
+    display: flex;
+    height: 175px;
+    overflow: hidden;
+    word-break: break;
+    
+    div {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 15px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    p {
+        color: #9B9595;
+        font-size: 12px;
+    }
+
+    a {
+        font-size: 12px;
+    }
+
+    img {
+        height: 175px;
+        width: 175px;
+    }
+    
+`;
 
 
 // Trending: <aside>
