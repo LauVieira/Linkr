@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import { Link,useHistory } from "react-router-dom";
 import axios from 'axios';
 import styled from 'styled-components';
-import UserContext from '../contexts/UserContext'
+import UserContext from '../contexts/UserContext';
+import LayOutPosts from '../components/LayOutPosts';
 
 export default function Timeline () {
     const {userData} = useContext(UserContext);
@@ -12,7 +13,7 @@ export default function Timeline () {
     useEffect(getPostsList,[]);
 
     function getPostsList () {
-        const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts?offset=0&limit=5',{headers: {'user-token': userData.token }});
+        const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts?offset=0&limit=15',{headers: {'user-token': userData.token }});
         request.then( response => {postsSucceeded(response)} ).catch(postsFailed);
     }
 
@@ -32,42 +33,14 @@ export default function Timeline () {
         <TimelinePage>
              {  
                 postsList.length === 0
-                    ? <Loading><img src='/styles/loading.gif' /><p>Loading, please wait :)</p></Loading>
+                    ? <Loading><img src='/images/loading.gif' /><p>Loading, please wait :)</p></Loading>
                     : 
-                        <feedContainer>
+                        <FeedContainer>
                             {postsList.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}
-                        </feedContainer>
+                        </FeedContainer>
                     }
             
         </TimelinePage>
-    );
-}
-
-
-function LayOutPosts (props) {
-    const {user,text,linkTitle,linkImage,linkDescription,link} = props.post;
-    const {username,avatar} = user;
-
-    return (
-        <PostContainer>
-
-            <div className='post-left'><img src={avatar} /></div>
-
-            <div className='post-right'>
-                <h2>{username}</h2>
-                <p>{text}</p>
-
-                <LinkContainer>
-                    <div>
-                        <h3>{linkTitle}</h3>
-                        <p>{linkDescription}</p>
-                        <a href={link} target='_blank'>{link}</a>
-                    </div>
-                    <img src={linkImage} />
-                </LinkContainer>
-            </div>
-
-        </PostContainer>
     );
 }
 
@@ -84,7 +57,6 @@ const Loading = styled.div`
     display: flex;
     flex-direction: column;
     height: 100vh;
-    justify-content: center;
     width: 100vw;
 
     p {
@@ -92,11 +64,9 @@ const Loading = styled.div`
         font: 500 24px 'Passion One', cursive;
         margin-top: 10px;
     }
-
-
 `;
 
-const feedContainer = styled.main`
+const FeedContainer = styled.main`
     align-items: center;
     color: #FFF;
     display: flex;
@@ -107,97 +77,8 @@ const feedContainer = styled.main`
 `;
 
 
-const PostContainer = styled.article`
-    background: #151515;
-    border-radius: 15px;
-    color: #CECECE;
-    display: flex;
-    font-family: 'Lato', sans-serif;
-    height: 300px;
-    margin-top: 20px;
-    padding: 25px;
-    width: 600px;
-    word-break: break;
-
-
-    .post-left {
-        height: 100%;
-        margin-right: 20px;
-    }
-    .post-left img {
-        border-radius: 50%;
-        height: 50px;
-        width: 50px;
-    }
-
-    .post-right {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        justify-content: space-between;
-        width: 100%;
-        
-        & > h2 {
-            font-size: 18px;
-            color: #FFF;
-        }
-        & > p {
-            font-size: 16px;
-            margin: 10px 0;
-        }
-    }
-`;
-
-const LinkContainer = styled.div`
-    border: 1px solid #CECECE;
-    border-radius: 10px;
-    display: flex;
-    height: 175px;
-    overflow: hidden;
-    word-break: break;
-    
-    div {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 15px;
-    }
-
-    h3 {
-        font-size: 16px;
-    }
-
-    p {
-        color: #9B9595;
-        font-size: 12px;
-    }
-
-    a {
-        font-size: 12px;
-    }
-
-    img {
-        height: 175px;
-        width: 175px;
-    }
-    
-`;
-
 
 // Trending: <aside>
-
-
-
-/*
-    import {IoIosArrowUp} from 'react-icons/io';
-    import {IoIosArrowDown} from 'react-icons/io';
-    <IoIosArrowUp />
-    <IoIosArrowDown />
-*/
-
-
-
-
 
 
 /*
@@ -223,21 +104,3 @@ user: {id: 31, username: "testandoNiche", avatar: "data:image/jpeg;base64,/9j/4Q
 }
 */
 
-
-
-
-
-
-
-
-
-
-/*
-useEffect(() => {
-        const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/cineflex/movies');
-        request.then(answer => {
-            setMoviesDocumentation(answer.data);
-        });
-        
-    },[]);
-    */
