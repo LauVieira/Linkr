@@ -62,7 +62,7 @@ const PostContainer = styled.article`
         flex-direction: column;
         flex-grow: 0;
         height: 100%;
-        justify-content: space-between;
+        justify-content: space-evenly;
         width: 100%;
         
         & > h2 {
@@ -78,7 +78,7 @@ const PostContainer = styled.article`
 
 
 const LinkContainer = styled.div`
-    border: 1px solid #CECECE;
+    border: 1px solid #404040;
     border-radius: 10px;
     display: flex;
     height: 175px;
