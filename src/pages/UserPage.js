@@ -47,7 +47,7 @@ export default function UserPage () {
                             <PostsListContainer>
                                 {userPosts.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}
                             </PostsListContainer>
-                            
+                          
                             <Trending />
                         </div>
                     </div>

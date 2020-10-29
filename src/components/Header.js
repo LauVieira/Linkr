@@ -30,7 +30,7 @@ export default function Header () {
                     <div><IoIosArrowDown  /></div>
                     <img src={userData.user.avatar}/>
                     <nav>
-                        <Link to='/'>My posts</Link>
+                        <Link to='/my-posts'>My posts</Link>
                         <Link to='/'>My likes</Link>
                         <Link to='/' onClick={ () => setUserData([...[]])}>Logout</Link>
                     </nav>
