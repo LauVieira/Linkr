@@ -1,5 +1,4 @@
-import React, { createContext,useContext, useState } from 'react';
-//import axios from 'axios';
+import React, { createContext,useState } from 'react';
 
 
 const UserContext = createContext();
@@ -17,7 +16,6 @@ export function UserContextProvider (props) {
         </UserContext.Provider>
     )
 }
-
 
 
 /*

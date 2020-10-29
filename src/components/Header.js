@@ -32,7 +32,7 @@ export default function Header () {
                     <nav>
                         <Link to='/my-posts'>My posts</Link>
                         <Link to='/'>My likes</Link>
-                        <Link to='/' onClick={ () => setUserData([...[]])}>Logout</Link>
+                        <Link to='/' onClick={ () => setUserData({...{}})}>Logout</Link>
                     </nav>
                 </Menu>
                 

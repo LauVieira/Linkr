@@ -8,7 +8,6 @@ import Header from '../components/Header';
 import LoginPage from '../pages/LoginPage';
 import Timeline from '../pages/Timeline';
 import UserPage from '../pages/UserPage';
-import MyPosts from '../pages/MyPosts';
 import {UserContextProvider} from '../contexts/UserContext';
 import MyPostsPage from '../pages/MyPosts';
 
@@ -35,3 +34,11 @@ export default function App () {
         </Router>
     );
 }
+
+/*
+ src/components/App.js    |  6 +++++
+ src/components/Header.js |  2 +-
+ src/pages/MyPosts.js     | 60 ++++++++++++++++++++++++++++++++++++++++++++++++
+ src/pages/UserPage.js    |  2 +-
+
+ */

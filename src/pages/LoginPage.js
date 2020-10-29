@@ -136,6 +136,7 @@ const LogoContainer = styled.div`
         h1 {
             font-size: 70px;
         }
+        
         h2 {
             font-size: 20px;
             margin-top: -10px;
@@ -152,7 +153,7 @@ const LoginContainer = styled.div`
     height: 100%;
     width: 40%;
 
-    p{
+    p {
         font: 400 20px 'Lato', sans-serif;
         margin-top: 20px;
         text-decoration: underline;
