@@ -6,7 +6,7 @@ const UserContext = createContext();
 export default UserContext;
 
 
-export function UserContextProvider (props) {                    // <<<<<<-------------------
+export function UserContextProvider (props) {
     const [userData,setUserData] = useState({});
 
     function headerConfig () {

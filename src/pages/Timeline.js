@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import UserContext from '../contexts/UserContext';
 import Trending from '../components/Trending';
 import LayOutPosts from '../components/LayOutPosts';
+import {Loading,CurrentPage,PostsListContainer} from '../components/SmallerComponents';
+
 
 export default function Timeline () {
     const {userData} = useContext(UserContext);
@@ -81,13 +83,13 @@ export default function Timeline () {
         <>
              {  
                 postsList.length === 0
-                    ? <Loading><img src='/images/loading.gif' /><p>Loading, please wait :)</p></Loading>
+                    ? <Loading />
 
-                    : <TimelinePage>
+                    : <CurrentPage>
                         <div>
                             <h1>timeline</h1>
                             <div>
-                                <FeedContainer>
+                                <PostsListContainer>
                                     <UserInput userData={userData} 
                                         submitComment={submitComment} 
                                         setUserLink={setUserLink}
@@ -98,13 +100,13 @@ export default function Timeline () {
                                     />
 
                                     {postsList.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}
-                                </FeedContainer>
+                                </PostsListContainer>
                                 
                                 <Trending />
                             </div>
                         </div>
                         
-                    </TimelinePage>
+                    </CurrentPage>
             }
             
         </>
@@ -132,52 +134,6 @@ function UserInput (props) {
         </UserInputContainer>
     );
 }
-
-const TimelinePage = styled.section`
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding-top: 70px;
-    width: 100%;
-
-    & > div > div {
-        display: flex;
-    }
-
-    h1 {
-        color: #FFF;
-        font: 700 40px 'Oswald', sans-serif;
-        margin: 50px 0;
-    }
-`;
-
-
-const Loading = styled.div`
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    padding-top: 100px;
-    width: 100vw;
-
-    p {
-        color: #FFF;
-        font: 500 24px 'Passion One', cursive;
-        margin-top: 10px;
-    }
-`;
-
-
-const FeedContainer = styled.main`
-    align-items: center;
-    color: #FFF;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    margin-right: 30px;
-   
-`;
 
 
 const UserInputContainer = styled.div`

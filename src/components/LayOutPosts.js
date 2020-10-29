@@ -1,18 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
 
 
 export default function LayOutPosts (props) {
     const {user,text,linkTitle,linkImage,linkDescription,link} = props.post;
-    const {username,avatar} = user;
+    const {id,username,avatar} = user;
+    const linkTo = `/user/${id}`;
 
     return (
         <PostContainer>
 
-            <div className='post-left'><img src={avatar} /></div>
+            <div className='post-left'><Link to={linkTo}><img src={avatar} /></Link></div>
 
             <div className='post-right'>
-                <h2>{username}</h2>
+                <h2><Link to={linkTo}>{username}</Link></h2>
                 <p>{text}</p>
 
                 <LinkContainer>
@@ -29,6 +31,7 @@ export default function LayOutPosts (props) {
     );
 }
 
+// const linkTo = `/pokemon/${idNumber}`;   //Linkr "/user/:id"
 
 const PostContainer = styled.article`
     background: #151515;
