@@ -3,9 +3,13 @@ import ReactDOM from 'react-dom';
 import { Link,useHistory } from "react-router-dom";
 import axios from 'axios';
 import styled from 'styled-components';
-import UserContext from '../contexts/UserContext'
+import UserContext from '../contexts/UserContext';
+import Header from '../components/Header';
+import Trending from '../components/Trending';
 
 export default function Timeline () {
+    const {userData} = useContext(UserContext);
+    /*
     const {userData} = useContext(UserContext);
     const [postsList,setPostsLists] = useState([]);
     getPostsList();
@@ -27,19 +31,21 @@ export default function Timeline () {
     function postsFailed () {
         alert('Houve uma falha ao obter os posts, por favor atualize a página');
     }
+    
+    */
 
-    return (
-        <>
-            {  
-                postsList.length === 0
-                    ? <h1>Loading</h1>
-                    : postsList.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} />)
-            }
-        </>
-    );
+
+   return (
+    <>
+     <Header />
+     <Trending />
+    <h1>Testando</h1>
+    </>
+);
 }
 
 
+/*
 function LayOutPosts (props) {
     const {user,text,linkTitle,linkImage,linkDescription,link} = props;
     const {username,avatar} = user;
@@ -53,11 +59,18 @@ function LayOutPosts (props) {
 }
 
 
-const PostContainer = styled.article`
-    display: flex;
 
-
-`;
+    return (
+        <>
+           
+           {  
+                postsList.length === 0
+                    ? <h1>Loading</h1>
+                  : postsList.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} />)
+            }  <
+        </>
+    );
+}
 
 
 
