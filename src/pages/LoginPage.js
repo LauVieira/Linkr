@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import styled from 'styled-components';
 import UserContext from '../contexts/UserContext'
+import {media} from '../components/SmallerComponents';
 
 export default function LoginPage () {
     const {setUserData} = useContext(UserContext);
@@ -67,8 +68,10 @@ export default function LoginPage () {
         <MainContainer>
 
             <LogoContainer>
-                <h1>linkr</h1>
-                <h2>save, share and discover<br/>the best links on the web</h2>
+                <div>
+                    <h1>linkr</h1>
+                    <h2>save, share and discover<br/>the best links on the web</h2>
+                </div>
             </LogoContainer>
 
             <LoginContainer>
@@ -101,13 +104,19 @@ const MainContainer = styled.section`
     color: #FFF;
     display: flex;
     height: 100vh;
-    width: 100%;
+    width: 100wv;
+
+    ${media} {
+        flex-direction: column;
+    }
 `;
 
 const LogoContainer = styled.div`
     background: #151515;
+    display: flex;
     height: 100%;
-    padding: 300px 0 0 150px;
+    align-items: center;
+    justify-content: center;
     width: 60%;
 
     h1 {
@@ -116,6 +125,21 @@ const LogoContainer = styled.div`
 
     h2 {
         font: 700 40px 'Oswald', sans-serif;
+    }
+
+    ${media} {
+        height: 180px;
+        padding: 10px 0 20px 0;
+        text-align: center;
+        width: 100%;
+
+        h1 {
+            font-size: 70px;
+        }
+        h2 {
+            font-size: 20px;
+            margin-top: -10px;
+        }
     }
 `;
 
@@ -158,6 +182,25 @@ const LoginContainer = styled.div`
             padding: 10px 15px;
             width: 100%;
         }
+
+        ${media} {
+            font-size: 22px;
+            width: 300px;
+
+            button {
+                padding: 7px;
+            }
+
+            input {
+                padding: 7px 15px;
+            }
+        }
+    }
+
+    ${media} {
+        justify-content: flex-start;
+        margin-top: 20px;
+        width: 100%;
     }
 `;
 

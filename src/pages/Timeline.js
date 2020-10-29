@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import UserContext from '../contexts/UserContext';
 import Trending from '../components/Trending';
 import LayOutPosts from '../components/LayOutPosts';
-import {Loading,CurrentPage,PostsListContainer} from '../components/SmallerComponents';
+import {media,Loading,CurrentPage,PostsListContainer} from '../components/SmallerComponents';
 
 
 export default function Timeline () {
@@ -121,7 +121,7 @@ function UserInput (props) {
             <img src={userData.user.avatar} />
 
             <form onSubmit={(event) => submitComment(event)}>
-                <h2>What do you want to bookmark today?</h2>
+                <h2>What do you wanna bookmark today?</h2>
                 <input type="url" placeholder="https//..." onChange={(e) => setUserLink(e.target.value)} value={userLink} disabled={clicked}/>
                 <input type="text" placeholder="Would you like to leave a comment?" onChange={(e) => setUserComment(e.target.value)} value={userComment} disabled={clicked}/>
 
@@ -140,8 +140,7 @@ const UserInputContainer = styled.div`
     border-radius: 15px;
     color: #707070;
     display: flex;
-    font-family: 'Lato', sans-serif;
-    font-weight: 300;
+    font: 300 16px 'Lato', sans-serif;
     height: 250px;
     margin-bottom: 20px;
     padding: 25px;
@@ -190,7 +189,41 @@ const UserInputContainer = styled.div`
         }
     }
     
+    ${media} {
+        border-radius: 0;
+        height: 200px;
+        padding: 15px;
+        width: 100vw;
 
+        form {
+
+            button {
+                font-size: 15px;
+                margin-top: 3px;
+                padding: 3px;
+                width: 120px;
+            }
+        
+            h2 {
+                font-size: 18px;
+                letter-spacing: -1px;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+
+            input {
+                font-size: 16px;
+                margin-bottom: 5px;
+            }
+        }
+        
+
+        img {
+            display: none;
+        }
+
+        
+    }
 
 `;
 

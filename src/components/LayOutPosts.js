@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { media } from '../components/SmallerComponents';
 
 
 export default function LayOutPosts (props) {
@@ -31,7 +32,6 @@ export default function LayOutPosts (props) {
     );
 }
 
-// const linkTo = `/pokemon/${idNumber}`;   //Linkr "/user/:id"
 
 const PostContainer = styled.article`
     background: #151515;
@@ -44,18 +44,19 @@ const PostContainer = styled.article`
     overflow-wrap: anywhere;
     padding: 25px;
     width: 600px;
-    word-break: break;
 
 
     .post-left {
         height: 100%;
         margin-right: 20px;
+
+        img {
+            border-radius: 50%;
+            height: 50px;
+            width: 50px;
+        }
     }
-    .post-left img {
-        border-radius: 50%;
-        height: 50px;
-        width: 50px;
-    }
+    
 
     .post-right {
         display: flex;
@@ -69,9 +70,26 @@ const PostContainer = styled.article`
             font-size: 18px;
             color: #FFF;
         }
+
         & > p {
             font-size: 16px;
             margin: 10px 0;
+        }
+    }
+
+    ${media} {
+        border-radius: 0;
+        height: 260px;
+        padding: 15px;
+        width: 100vw;
+
+        .post-left {
+            margin-right: 10px;
+
+            img {
+                height: 40px;
+                width: 40px;
+            }
         }
     }
 `;
@@ -81,15 +99,16 @@ const LinkContainer = styled.div`
     border: 1px solid #404040;
     border-radius: 10px;
     display: flex;
+    font-size: 12px;
     height: 175px;
     justify-content: space-between;
     overflow: hidden;
-    word-break: break;
     
     div {
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
+        overflow-wrap: anywhere;
         padding: 15px;
     }
 
@@ -99,16 +118,29 @@ const LinkContainer = styled.div`
 
     p {
         color: #9B9595;
-        font-size: 12px;
-    }
-
-    a {
-        font-size: 12px;
     }
 
     img {
         height: 175px;
         width: 175px;
     }
-    
+
+    ${media} {
+        border-radius: 6px;
+        font-size: 10px;
+        height: 140px;
+
+        div {
+            padding: 5px;
+        }
+
+        h3 {
+            font-size: 12px;
+        }
+
+        img {
+            height: 140px;
+            width: 120px;
+        }
+    }
 `;
