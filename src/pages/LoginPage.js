@@ -122,7 +122,6 @@ const LogoContainer = styled.div`
 
 const LoginContainer = styled.div`
     align-items: center;
-    background: #333;
     display: flex;
     flex-direction: column;
     justify-content: center;

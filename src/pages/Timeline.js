@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Link,useHistory } from "react-router-dom";
 import axios from 'axios';
@@ -6,89 +6,210 @@ import styled from 'styled-components';
 import UserContext from '../contexts/UserContext';
 import Header from '../components/Header';
 import Trending from '../components/Trending';
+import LayOutPosts from '../components/LayOutPosts';
 
 export default function Timeline () {
     const {userData} = useContext(UserContext);
-    /*
-    const {userData} = useContext(UserContext);
     const [postsList,setPostsLists] = useState([]);
-    getPostsList();
+    const [userLink,setUserLink] = useState('');
+    const [userComment,setUserComment] = useState('');
+    const [clicked,setClicked] = useState(false);
+    const postHeader = {headers: {'user-token': userData.token }}
+
+
+    useEffect(getPostsList,[]);
+
 
     function getPostsList () {
-        const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts?offset=0&limit=5',{headers: {'user-token': userData.token }});
-        request.then( response => {postsSucceeded(response)} ).catch(postsFailed);
+        const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts?offset=0&limit=15',postHeader);
+        request.then( response => {postsListSucceeded(response)} ).catch(postsListFailed);
     }
 
-    function postsSucceeded (response) {
-        if (response.data.posts.length) {
-            setPostsLists(...response.data.posts);
-        }
-        else {
-            alert('Nenhum post encontrado')
-        }
+
+    function postsListSucceeded (response) {
+        response.data.posts.length
+            ? setPostsLists([...response.data.posts])
+            : alert('Nenhum post encontrado');
     }
 
-    function postsFailed () {
+
+    function postsListFailed () {
         alert('Houve uma falha ao obter os posts, por favor atualize a página');
     }
+
+
+    function submitComment () {
+        event.preventDefault();
+
+        if (userLink.length) {
+            setClicked(true);
+            sendPost(formatObj());
+        }
+        else {
+            alert("Sorry, you can't publish without a link");
+        }
+    }
+
+
+    function formatObj () {
+        const postObj = userComment.length? ({link: userLink, text: userComment}) : ({link: userLink});
+        return postObj;
+    }
+
     
-    */
+    function sendPost (postObj) {
+        console.log(postObj);
+        const request = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts',postObj,postHeader);
+        request.then(userPostSucceeded).catch(userPostFailed);
+    }
+    
+    
 
 
-   return (
-    <>
-     <Header />
-     <Trending />
-    <h1>Testando</h1>
-    </>
-);
-}
+    function userPostSucceeded () {
+        setUserLink('');
+        setUserComment('');
+        setClicked(false);
+        getPostsList();
+    }
 
 
-/*
-function LayOutPosts (props) {
-    const {user,text,linkTitle,linkImage,linkDescription,link} = props;
-    const {username,avatar} = user;
-
-    return (
-        <PostContainer>
-            <div className='post-left'>Testando</div>
-            <div className='post-right'></div>
-        </PostContainer>
-    );
-}
-
+    function userPostFailed () {
+        alert('Sorry, there was an error when publishing your link');
+        setClicked(false);
+    }
 
 
     return (
         <>
-           
-           {  
+        <Header />
+        <Trending />
+        <TimelinePage>
+             {  
                 postsList.length === 0
-                    ? <h1>Loading</h1>
-                  : postsList.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} />)
-            }  <
+                    ? <Loading><img src='/images/loading.gif' /><p>Loading, please wait :)</p></Loading>
+                    : 
+                        <FeedContainer>
+
+                            <UserInputContainer>
+                                <img src={userData.user.avatar} />
+
+                                <form onSubmit={(event) => submitComment(event)}>
+                                    <h2>What do you want to bookmark today?</h2>
+                                    <input type="url" placeholder="https//..." onChange={(e) => setUserLink(e.target.value)} value={userLink} disabled={clicked}/>
+                                    <input type="text" placeholder="Would you like to leave a comment?" onChange={(e) => setUserComment(e.target.value)} value={userComment} disabled={clicked}/>
+
+                                    {   clicked
+                                        ? <button disabled={clicked}>Publishing...</button> 
+                                        : <button type="submit">Publish</button>  
+                                    }  
+                                </form>
+                            </UserInputContainer>
+
+                            {postsList.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}
+
+                        </FeedContainer>
+                    }
+            
+        </TimelinePage>
         </>
     );
 }
 
 
 
+const TimelinePage = styled.section`
+    height: 100%;
+    margin-top: 100px;
+    width: 100%;
+`;
+
+
+const Loading = styled.div`
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+
+    p {
+        color: #FFF;
+        font: 500 24px 'Passion One', cursive;
+        margin-top: 10px;
+    }
+`;
+
+
+const FeedContainer = styled.main`
+    align-items: center;
+    color: #FFF;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+   
+`;
+
+
+const UserInputContainer = styled.div`
+    background: #FFF;
+    border-radius: 15px;
+    color: #707070;
+    display: flex;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    height: 250px;
+    padding: 25px;
+    width: 600px;
+
+    img {
+        border-radius: 50%;
+        height: 50px;
+        margin-right: 20px;
+        width: 50px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        width: 100%;
+
+        button {
+            background: #1877F2;
+            border-radius: 5px;
+            color: #FFF;
+            font-weight: 700;
+            padding: 10px;
+            text-align: center;
+            width: 120px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        input {
+            background: #EFEFEF;
+            border-radius: 5px;
+            flex-grow: grow;
+            margin-bottom: 10px;
+            overflow-wrap: anywhere;
+            padding: 10px;
+            width: 100%;
+        }
+        input[type=text] {
+            flex-grow: 1;
+        }
+    }
+    
+
+
+`;
 
 // Trending: <aside>
-
-
-
-/*
-    import {IoIosArrowUp} from 'react-icons/io';
-    import {IoIosArrowDown} from 'react-icons/io';
-    <IoIosArrowUp />
-    <IoIosArrowDown />
-*/
-
-
-
-
 
 
 /*
@@ -114,21 +235,3 @@ user: {id: 31, username: "testandoNiche", avatar: "data:image/jpeg;base64,/9j/4Q
 }
 */
 
-
-
-
-
-
-
-
-
-
-/*
-useEffect(() => {
-        const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/cineflex/movies');
-        request.then(answer => {
-            setMoviesDocumentation(answer.data);
-        });
-        
-    },[]);
-    */
