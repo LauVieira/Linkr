@@ -10,19 +10,18 @@ import {Loading,CurrentPage,PostsListContainer} from '../components/SmallerCompo
 
 
 export default function Timeline () {
-    const {userData} = useContext(UserContext);
+    const {userData,header} = useContext(UserContext);             //     <<<<<<<<<<<<-------------------
     const [postsList,setPostsLists] = useState([]);
     const [userLink,setUserLink] = useState('');
     const [userComment,setUserComment] = useState('');
     const [clicked,setClicked] = useState(false);
-    const postHeader = {headers: {'user-token': userData.token }}
 
 
     useEffect(getPostsList,[]);
 
 
     function getPostsList () {
-        const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts?offset=0&limit=15',postHeader);
+        const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts?offset=0&limit=15',header);
         request.then( response => {postsListSucceeded(response)} ).catch(postsListFailed);
     }
 
@@ -30,7 +29,7 @@ export default function Timeline () {
     function postsListSucceeded (response) {
         response.data.posts.length
             ? setPostsLists([...response.data.posts])
-            : alert('Nenhum post encontrado');
+            : alert('No posts found');
     }
 
 
@@ -60,7 +59,7 @@ export default function Timeline () {
     
     function sendPost (postObj) {
         console.log(postObj);
-        const request = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts',postObj,postHeader);
+        const request = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts',postObj,header);
         request.then(userPostSucceeded).catch(userPostFailed);
     }
     
@@ -144,6 +143,7 @@ const UserInputContainer = styled.div`
     font-family: 'Lato', sans-serif;
     font-weight: 300;
     height: 250px;
+    margin-bottom: 20px;
     padding: 25px;
     width: 600px;
 
@@ -219,4 +219,5 @@ text: "COMO INSTALA O ZAPEEEEEEEEEEE #zap"
 user: {id: 31, username: "testandoNiche", avatar: "data:image/jpeg;base64,/9j/4QzVRXhpZgAATU0AKgAAAAg…fbrirb9NvpxYuFabdMkq4faH8cVbfly26YqsFKZFXGm2Kv//Z"}
 }
 */
+
 

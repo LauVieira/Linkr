@@ -6,13 +6,13 @@ import UserContext from '../contexts/UserContext';
 
 export default function Trending () {
 
-    const {userData} = useContext(UserContext);
+    const {header} = useContext(UserContext);
     
     const [hashtags, setHashtags] = useState([]);
 
     useEffect( () => {
     
-        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/hashtags/trending", { headers: {'user-token': userData.token }});
+        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/hashtags/trending", header);
     
         request.then( ({data}) => {
             setHashtags(data.hashtags);

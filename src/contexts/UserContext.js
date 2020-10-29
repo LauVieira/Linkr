@@ -8,15 +8,16 @@ export default UserContext;
 
 export function UserContextProvider (props) {
     const [userData,setUserData] = useState({});
+    const header = {headers: {"user-token": userData.token }};
 
-    function headerConfig () {
-        const header = {headers: {"user-token": userData.token }}
-        return header;
-    }
+    // function headerConfig () {
+    //     const header = {headers: {"user-token": userData.token }}
+    //     return header;
+    // }
 
 
     return (
-        <UserContext.Provider value = {{userData, setUserData}}>
+        <UserContext.Provider value = {{userData, setUserData, header}}>
             {props.children}
         </UserContext.Provider>
     )

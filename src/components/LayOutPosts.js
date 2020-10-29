@@ -40,7 +40,7 @@ const PostContainer = styled.article`
     display: flex;
     font-family: 'Lato', sans-serif;
     height: 300px;
-    margin-top: 20px;
+    margin-bottom: 20px;
     overflow-wrap: anywhere;
     padding: 25px;
     width: 600px;
