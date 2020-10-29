@@ -4,7 +4,6 @@ import { Link,useHistory } from "react-router-dom";
 import axios from 'axios';
 import styled from 'styled-components';
 import UserContext from '../contexts/UserContext';
-import Header from '../components/Header';
 import Trending from '../components/Trending';
 import LayOutPosts from '../components/LayOutPosts';
 
@@ -63,8 +62,6 @@ export default function Timeline () {
         request.then(userPostSucceeded).catch(userPostFailed);
     }
     
-    
-
 
     function userPostSucceeded () {
         setUserLink('');
@@ -82,46 +79,77 @@ export default function Timeline () {
 
     return (
         <>
-        <Header />
-        <Trending />
-        <TimelinePage>
              {  
                 postsList.length === 0
                     ? <Loading><img src='/images/loading.gif' /><p>Loading, please wait :)</p></Loading>
-                    : 
-                        <FeedContainer>
 
-                            <UserInputContainer>
-                                <img src={userData.user.avatar} />
+                    : <TimelinePage>
+                        <div>
+                            <h1>timeline</h1>
+                            <div>
+                                <FeedContainer>
+                                    <UserInput userData={userData} 
+                                        submitComment={submitComment} 
+                                        setUserLink={setUserLink}
+                                        userLink={userLink}
+                                        setUserComment={setUserComment}
+                                        userComment={userComment}
+                                        clicked={clicked}
+                                    />
 
-                                <form onSubmit={(event) => submitComment(event)}>
-                                    <h2>What do you want to bookmark today?</h2>
-                                    <input type="url" placeholder="https//..." onChange={(e) => setUserLink(e.target.value)} value={userLink} disabled={clicked}/>
-                                    <input type="text" placeholder="Would you like to leave a comment?" onChange={(e) => setUserComment(e.target.value)} value={userComment} disabled={clicked}/>
-
-                                    {   clicked
-                                        ? <button disabled={clicked}>Publishing...</button> 
-                                        : <button type="submit">Publish</button>  
-                                    }  
-                                </form>
-                            </UserInputContainer>
-
-                            {postsList.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}
-
-                        </FeedContainer>
-                    }
+                                    {postsList.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}
+                                </FeedContainer>
+                                
+                                <Trending />
+                            </div>
+                        </div>
+                        
+                    </TimelinePage>
+            }
             
-        </TimelinePage>
         </>
     );
 }
 
 
+function UserInput (props) {
+    const {userData,submitComment,setUserLink,userLink,setUserComment,userComment,clicked} = props;
+
+    return (
+        <UserInputContainer>
+            <img src={userData.user.avatar} />
+
+            <form onSubmit={(event) => submitComment(event)}>
+                <h2>What do you want to bookmark today?</h2>
+                <input type="url" placeholder="https//..." onChange={(e) => setUserLink(e.target.value)} value={userLink} disabled={clicked}/>
+                <input type="text" placeholder="Would you like to leave a comment?" onChange={(e) => setUserComment(e.target.value)} value={userComment} disabled={clicked}/>
+
+                {   clicked
+                    ? <button disabled={clicked}>Publishing...</button> 
+                    : <button type="submit">Publish</button>  
+                }  
+            </form>
+        </UserInputContainer>
+    );
+}
 
 const TimelinePage = styled.section`
+    align-items: center;
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    margin-top: 100px;
+    padding-top: 70px;
     width: 100%;
+
+    & > div > div {
+        display: flex;
+    }
+
+    h1 {
+        color: #FFF;
+        font: 700 40px 'Oswald', sans-serif;
+        margin: 50px 0;
+    }
 `;
 
 
@@ -130,6 +158,7 @@ const Loading = styled.div`
     display: flex;
     flex-direction: column;
     height: 100vh;
+    padding-top: 100px;
     width: 100vw;
 
     p {
@@ -146,7 +175,7 @@ const FeedContainer = styled.main`
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 100%;
+    margin-right: 30px;
    
 `;
 

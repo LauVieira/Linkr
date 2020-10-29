@@ -29,13 +29,15 @@ USER DATA:
 {data: {…}, status: 200, statusText: "OK", headers: {…}, config: {…}, …}
 
 
-data:
-token: "b1e7b642-890a-4ff2-8b49-dcf982d78ed9"
-user:
-avatar: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD"
-email: "agataivanoff@yahoo.com.br"
-id: 43
-username: "Agata,aGata"
+userData{
+    {token: "b1e7b642-890a-4ff2-8b49-dcf982d78ed9"}
+    {user:
+        avatar: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD"
+        email: "agataivanoff@yahoo.com.br"
+        id: 43
+        username: "Agata,aGata"
+    }
+}
 */
 
 

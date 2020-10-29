@@ -1,9 +1,6 @@
-import React, { useState, useContext, useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import { Link,useHistory } from "react-router-dom";
-import axios from 'axios';
+import React from 'react';
 import styled from 'styled-components';
-import UserContext from '../contexts/UserContext'
+
 
 export default function LayOutPosts (props) {
     const {user,text,linkTitle,linkImage,linkDescription,link} = props.post;

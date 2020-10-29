@@ -1,6 +1,5 @@
 import React, {useContext, useState} from 'react';
 import styled from 'styled-components'
-import {IoIosArrowUp} from 'react-icons/io'; //posso fazer com um só e rotacionar ao clicar
 import {IoIosArrowDown} from 'react-icons/io';
 import UserContext from '../contexts/UserContext'
 import { Link } from 'react-router-dom';
@@ -9,18 +8,18 @@ import { useHistory } from 'react-router-dom';
 
 
 export default function Header () {
-    const {userData} = useContext(UserContext);
+    const {userData,setUserData} = useContext(UserContext);
     let history = useHistory();
-    console.log(userData);
     const [OpenMenu,SetOpenMenu] = useState(false);
-    console.log(userData);
 
 
     return (
         <StyledHeader>
+
             <Linkr> 
                 linkr
             </Linkr>
+
             <div onClick={() => SetOpenMenu(!OpenMenu)}>
                 <Menu
                  opacity={OpenMenu? '1':'0'}
@@ -28,13 +27,14 @@ export default function Header () {
                  rotate={OpenMenu? 'rotate(180deg)':'rotate(0)'}
                 >
                     <div><IoIosArrowDown  /></div>
+                    <img src={userData.user.avatar}/>
                     <nav>
-                         <Link to='/'>My posts</Link>
+                        <Link to='/'>My posts</Link>
                         <Link to='/'>My likes</Link>
-                        <Link to='/'>Logout</Link>
+                        <Link to='/' onClick={ () => setUserData([...[]])}>Logout</Link>
                     </nav>
                 </Menu>
-                <img src={userData.avatar}/>
+                
             </div>
         </StyledHeader>
         
@@ -43,17 +43,20 @@ export default function Header () {
 
 const StyledHeader = styled.div `
     width: 100%;
-    height: 4.5rem;
+    height: 70px;
     background-color: #151515;
     display: flex;
     justify-content: space-between;
+    left: 0;
     align-items: center;
     padding: 0 2rem 0 2rem; 
+    position: fixed;
+    top: 0;
 
     img {
-        altura: 50px;
-        largura: 50px;
-        raio da borda: 50%;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
     }
 `;
 
@@ -70,22 +73,25 @@ const Linkr = styled.div `
 
 
 const Menu = styled.div`
+    align-items: center;
     position: relative;
+    display: flex;
     color: #FFF;
     font-size: 3vw;
     margin-right: 10px;
-    div{
+
+    div {
         transform: ${props => props.rotate};
     }
+
     nav {
         display:flex;
         flex-direction:column;
-        font-size: 1.5vw;
+        font: 700 1.5vw 'Lato', sans-serif;
         top:50px;
         position: absolute;
         background:#151515;
         border-bottom-left-radius: 25px;
-        font-family:'Lato', sans-serif;
         width: 200px;
         right: -63px;
         opacity: ${props => props.opacity};
@@ -93,7 +99,8 @@ const Menu = styled.div`
         padding: 20px;
         transform: ${props => props.translate};
     }
-    a{
+
+    a {
         padding: 10px;
     }
-    `
+`;
