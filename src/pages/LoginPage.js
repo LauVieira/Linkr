@@ -146,6 +146,7 @@ const LoginContainer = styled.div`
     width: 40%;
 
     p {
+        cursor: pointer;
         font: 400 20px 'Lato', sans-serif;
         margin-top: 20px;
         text-decoration: underline;
@@ -171,6 +172,7 @@ const LoginContainer = styled.div`
             background: #FFF;
             border-radius: 6px;
             color: #9F9F9F;
+            cursor: text;
             margin-bottom: 10px;
             padding: 10px 15px;
             width: 100%;

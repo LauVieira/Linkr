@@ -19,7 +19,6 @@ export default function Header () {
             <div onClick={() => SetOpenMenu(!OpenMenu)}>
                 <Menu
                  translate={OpenMenu? 'translateY(0)':'translateY(-290px)'}
-                 opacity={OpenMenu? 1 : 0}
                  rotate={OpenMenu? 'rotate(180deg)':'rotate(0)'}
                 >
                     <div><IoIosArrowDown  /></div>
@@ -27,7 +26,7 @@ export default function Header () {
 
                     <nav>
                         <Link to='/my-posts'>My posts</Link>
-                        <Link to='/'>My likes</Link>
+                        <Link to='/my-posts'>My likes</Link>
                         <Link to='/' onClick={ () => setUserData({...{}})}>Logout</Link>
                     </nav>
                 </Menu>
@@ -68,6 +67,7 @@ const Menu = styled.div`
     margin-right: 10px;
 
     div {
+        cursor: pointer;
         font-size: 40px;
         margin-right: 10px;
         transform: ${props => props.rotate};
@@ -87,7 +87,6 @@ const Menu = styled.div`
         display:flex;
         flex-direction:column;
         font: 700 20px 'Lato', sans-serif;
-        opacity: ${props => props.opacity};
         padding: 20px;
         position: fixed;
         right: 0px;

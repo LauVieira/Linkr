@@ -175,6 +175,7 @@ const UserInputContainer = styled.div`
         input {
             background: #EFEFEF;
             border-radius: 5px;
+            cursor: text;
             flex-grow: grow;
             margin-bottom: 10px;
             overflow-wrap: anywhere;
