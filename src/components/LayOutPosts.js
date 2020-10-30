@@ -1,13 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link,useHistory } from 'react-router-dom';
+import ReactHashtag from "react-hashtag";
 import { media } from '../components/SmallerComponents';
 
 
 export default function LayOutPosts (props) {
+    let history = useHistory();
     const {user,text,linkTitle,linkImage,linkDescription,link} = props.post;
     const {id,username,avatar} = user;
     const linkTo = `/user/${id}`;
+
+
+    function openHashtag (hashtag) {
+        const hashtagName = hashtag.slice(1);
+        history.push(`/hashtag/${hashtagName}`);
+    }
+
 
     return (
         <PostContainer>
@@ -16,7 +25,7 @@ export default function LayOutPosts (props) {
 
             <div className='post-right'>
                 <h2><Link to={linkTo}>{username}</Link></h2>
-                <p>{text}</p>
+                <p><ReactHashtag onHashtagClick={ hashtag => openHashtag(hashtag)}>{text}</ReactHashtag></p>
 
                 <LinkContainer>
                     <div>
@@ -74,6 +83,11 @@ const PostContainer = styled.article`
         & > p {
             font-size: 16px;
             margin: 10px 0;
+
+            span {
+                color: #FFF;
+                font-weight: 700;
+            }
         }
     }
 
@@ -144,3 +158,16 @@ const LinkContainer = styled.div`
         }
     }
 `;
+
+
+/*
+[16:22, 28/10/2020] +55 21 96569-7700: <p><ReactHashtag onHashtagClick={val => HashtagPage(val)}>
+    {post.text} // comentário da pessoa completo
+</ReactHashtag></p>
+[16:22, 28/10/2020] +55 21 96569-7700: Ele identifica a hashtag dentro do texto
+[16:22, 28/10/2020] +55 21 96569-7700: pra estilizar, ele considera hashtag como span
+*/
+
+// onHashtagClick={val => console.log(val)} #hoho
+
+///hashtag/:hashtag" em que :hashtag é o nome da hashtag (sem #)

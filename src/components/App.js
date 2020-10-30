@@ -5,11 +5,13 @@ import {
   Route
 } from 'react-router-dom';
 import Header from '../components/Header';
+import HashtagPage from '../pages/HashtagPage';
 import LoginPage from '../pages/LoginPage';
-import Timeline from '../pages/Timeline';
+import MyPostsPage from '../pages/MyPosts';
+import TimelinePage from '../pages/TimelinePage';
 import UserPage from '../pages/UserPage';
 import {UserContextProvider} from '../contexts/UserContext';
-import MyPostsPage from '../pages/MyPosts';
+
 
 export default function App () {
     return (    
@@ -19,7 +21,7 @@ export default function App () {
                     <Route path='/' exact component={LoginPage} />
                     <Route path='/timeline' exact>
                         <Header />
-                        <Timeline />
+                        <TimelinePage />
                     </Route>
                     <Route path='/my-posts' exact>
                         <Header />
@@ -29,16 +31,12 @@ export default function App () {
                         <Header />
                         <UserPage />
                     </Route>
+                    <Route path='/hashtag/:hashtag' exact>
+                        <Header />
+                        <HashtagPage />
+                    </Route>
                 </UserContextProvider>
             </Switch>
         </Router>
     );
 }
-
-/*
- src/components/App.js    |  6 +++++
- src/components/Header.js |  2 +-
- src/pages/MyPosts.js     | 60 ++++++++++++++++++++++++++++++++++++++++++++++++
- src/pages/UserPage.js    |  2 +-
-
- */

@@ -9,7 +9,7 @@ import LayOutPosts from '../components/LayOutPosts';
 import {media,Loading,CurrentPage,PostsListContainer} from '../components/SmallerComponents';
 
 
-export default function Timeline () {
+export default function TimelinePage () {
     const {userData,header} = useContext(UserContext);             //     <<<<<<<<<<<<-------------------
     const [postsList,setPostsLists] = useState([]);
     const [userLink,setUserLink] = useState('');
