@@ -7,7 +7,9 @@ import UserContext from '../contexts/UserContext';
 
 export default function Trending () {
     const [ hashtags, setHashtags ] = useState([]);
+    const [hashtagSearched, setHashtagSearched] = useState('');
     const { header } = useContext(UserContext);
+    let history = useHistory();
 
     useEffect( () => {
         const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/hashtags/trending', header);
@@ -20,12 +22,21 @@ export default function Trending () {
 
     }, []);
 
+    function searchHashtag (event) {
+        event.preventDefault();
+        console.log('entrei');
+    }
+
     return (
         <ContainerTrending>
 
             <div className="title">
                 Trending
             </div>
+
+            <form onSubmit={(event) => searchHashtag(event)}>
+                <input type="text" placeholder="search hashtag" onChange={(e) => setHashtagSearched(e.target.value)} value={hashtagSearched}/>
+            </form>
 
             <div className="hashtag">   
                 {hashtags.map( hashtag => <Link to = {`/hashtag/${hashtag.name}`} key ={hashtag.id} ><p>{`# ${hashtag.name}`}</p></Link> )}
@@ -40,7 +51,7 @@ const ContainerTrending = styled.div `
     border-radius: 15px;
     color: #FFF;
     flex-direction: column;
-    height: 450px;
+    height: 500px;
     width: 250px;
     
     .title {
