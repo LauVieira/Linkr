@@ -9,26 +9,16 @@ import {Loading,CurrentPage,PostsListContainer} from '../components/SmallerCompo
 
 export default function UserPage () {
     const {header} = useContext(UserContext);
-    let hashtagName = useParams().hashtag;
+    const hashtagName = useParams().hashtag;
     const [hashtagPosts,setHashtagPosts] = useState([]);
 
     
-    useEffect(getIdsPosts,[]);
+    useEffect(getIdsPosts,[hashtagName]);
 
 
     function getIdsPosts () {
         const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/hashtags/${hashtagName}/posts?offset=0&limit=10`,header);
-        request.then( response => {hashtagPostsSucceeded(response)} ).catch(hashtagPostsFailed);
-    }
-
-
-    function hashtagPostsSucceeded (response) {
-        setHashtagPosts([...response.data.posts]);
-    }
-
-
-    function hashtagPostsFailed () {
-        alert('Houve uma falha ao obter os posts, por favor atualize a página');
+        request.then( response => {setHashtagPosts([...response.data.posts])} ).catch(() => alert('There was an error when loading the posts, please refresh the page'));
     }
 
 

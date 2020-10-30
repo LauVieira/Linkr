@@ -7,7 +7,7 @@ import {
 import Header from '../components/Header';
 import HashtagPage from '../pages/HashtagPage';
 import LoginPage from '../pages/LoginPage';
-import MyPostsPage from '../pages/MyPosts';
+import MyPostsPage from '../pages/MyPostsPage';
 import TimelinePage from '../pages/TimelinePage';
 import UserPage from '../pages/UserPage';
 import {UserContextProvider} from '../contexts/UserContext';
