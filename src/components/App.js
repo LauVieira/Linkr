@@ -12,6 +12,7 @@ import MyPosts from '../pages/MyPosts';
 import {UserContextProvider} from '../contexts/UserContext';
 import MyPostsPage from '../pages/MyPosts';
 
+
 export default function App () {
     return (    
         <Router>
