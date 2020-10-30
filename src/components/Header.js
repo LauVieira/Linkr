@@ -13,13 +13,12 @@ export default function Header () {
         <StyledHeader>
 
             <Linkr> 
-                linkr
+            <Link to='/timeline'> linkr </Link>
             </Linkr>
 
             <div onClick={() => SetOpenMenu(!OpenMenu)}>
                 <Menu
-                 opacity={OpenMenu? '1':'0'}
-                 translate={OpenMenu? 'translateY(0)':'translateY(-20px)'}
+                 translate={OpenMenu? 'translateY(0)':'translateY(-290px)'}
                  rotate={OpenMenu? 'rotate(180deg)':'rotate(0)'}
                 >
                     <div><IoIosArrowDown  /></div>
@@ -49,6 +48,7 @@ const StyledHeader = styled.div `
     top: 0;
     width: 100%;
 
+    
     img {
         border-radius: 50%;
         height: 50px;
@@ -76,12 +76,14 @@ const Menu = styled.div`
     color: #FFF;
     display: flex;
     margin-right: 10px;
-    position: relative;
+    z-index:3;
+
 
     div {
         font-size: 40px;
-        margin-right: 5px;
+        margin-right: 50px;
         transform: ${props => props.rotate};
+
     }
 
     nav {
@@ -99,6 +101,8 @@ const Menu = styled.div`
         transition: 400ms ease;
         transform: ${props => props.translate};
         width: 170px;
+
+        z-index: 0;
     }
 
     a {
