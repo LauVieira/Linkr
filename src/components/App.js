@@ -4,17 +4,16 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
-import Header from '../components/Header';
 import HashtagPage from '../pages/HashtagPage';
+import Header from '../components/Header';
 import LoginPage from '../pages/LoginPage';
 import MyPostsPage from '../pages/MyPostsPage';
 import TimelinePage from '../pages/TimelinePage';
 import UserPage from '../pages/UserPage';
 import {UserContextProvider} from '../contexts/UserContext';
 
-
-
 export default function App () {
+    
     return (    
         <Router>
             <Switch>

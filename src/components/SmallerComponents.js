@@ -1,27 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 
-
 export const media = '@media (max-width: 800px)';
 
-
 export function Loading () {
+
     return (
         <LoadingWrapper><img src='/images/loading.gif' /><p>Loading, please wait :)</p></LoadingWrapper>
     );
 }
 
-
 export function CurrentPage (props) {
 
     return (
         <CurrentPageWrapper>
-            {props.children}
+            <div>
+                {props.children}
+            </div>
         </CurrentPageWrapper>
     );
-
 }
-
 
 export function PostsListContainer (props) {
 
@@ -30,9 +28,7 @@ export function PostsListContainer (props) {
             {props.children}
         </PostsListWrapper>
     );
-
 }
-
 
 const LoadingWrapper = styled.div`
     align-items: center;
@@ -48,7 +44,6 @@ const LoadingWrapper = styled.div`
         margin-top: 10px;
     }
 `;
-
 
 const CurrentPageWrapper = styled.section`
     align-items: center;
@@ -80,7 +75,6 @@ const CurrentPageWrapper = styled.section`
     }
 `;
 
-
 const PostsListWrapper = styled.main`
     align-items: center;
     color: #FFF;
@@ -88,5 +82,4 @@ const PostsListWrapper = styled.main`
     flex-direction: column;
     height: 100%;
     margin-right: 30px;
-   
 `;

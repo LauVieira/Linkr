@@ -1,18 +1,13 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components'
-import {IoIosArrowDown} from 'react-icons/io';
+import { IoIosArrowDown } from 'react-icons/io';
 import UserContext from '../contexts/UserContext'
 import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
 import {media} from '../components/SmallerComponents';
 
-
-
 export default function Header () {
-    const {userData,setUserData} = useContext(UserContext);
-    let history = useHistory();
-    const [OpenMenu,SetOpenMenu] = useState(false);
-
+    const { userData, setUserData } = useContext(UserContext);
+    const [ OpenMenu, SetOpenMenu ] = useState(false);
 
     return (
         <StyledHeader>
@@ -22,7 +17,6 @@ export default function Header () {
             </Linkr>
 
             <div onClick={() => SetOpenMenu(!OpenMenu)}>
-                
                 <Menu
                  opacity={OpenMenu? '1':'0'}
                  translate={OpenMenu? 'translateY(0)':'translateY(-20px)'}
@@ -30,16 +24,16 @@ export default function Header () {
                 >
                     <div><IoIosArrowDown  /></div>
                     <img src={userData.user.avatar}/>
+
                     <nav>
                         <Link to='/my-posts'>My posts</Link>
                         <Link to='/'>My likes</Link>
                         <Link to='/' onClick={ () => setUserData({...{}})}>Logout</Link>
                     </nav>
                 </Menu>
-                
             </div>
-        </StyledHeader>
-        
+
+        </StyledHeader> 
     );
 }
 
@@ -76,8 +70,6 @@ const Linkr = styled.p `
     font: 700 3.1rem 'Passion One', cursive;
     letter-spacing: 0.05rem;
 `;
-
-
 
 const Menu = styled.div`
     align-items: center;
@@ -130,5 +122,4 @@ const Menu = styled.div`
             }
         }
     }
-
 `;

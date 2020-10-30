@@ -1,40 +1,37 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import UserContext from '../contexts/UserContext';
-import {media} from '../components/SmallerComponents';
+import { media } from '../components/SmallerComponents';
 
 export default function Trending () {
-
-    const {header} = useContext(UserContext);
-    
-    const [hashtags, setHashtags] = useState([]);
+    const { header } = useContext(UserContext);
+    const [ hashtags, setHashtags ] = useState([]);
 
     useEffect( () => {
-    
-        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/hashtags/trending", header);
-    
+        const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/hashtags/trending', header);
         request.then( ({data}) => {
-            setHashtags(data.hashtags);
-        })
-        request.catch( () => {
-            alert("Houve uma falha em obter as hashtags. Atualize a página");
+            setHashtags(data.hashtags)
         });
-    } , []);
+        request.catch( () => {
+            alert('There was an error when loading the hashtags, please refresh the page')
+        });
 
-    
+    }, []);
+
     return (
         <ContainerTrending>
+
             <div className="title">
                 Trending
             </div>
+
             <div className="hashtag">   
                 {hashtags.map( hashtag => <Link to = {`/hashtag/${hashtag.name}`} key ={hashtag.id} ><p>{`# ${hashtag.name}`}</p></Link> )}
             </div>
         
         </ContainerTrending>
-        
     );
 }
 
@@ -45,7 +42,6 @@ const ContainerTrending = styled.div `
     flex-direction: column;
     height: 450px;
     width: 250px;
-    
     
     .title {
         border-bottom: 1px solid #222;

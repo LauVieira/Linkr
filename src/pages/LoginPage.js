@@ -6,15 +6,14 @@ import UserContext from '../contexts/UserContext'
 import {media} from '../components/SmallerComponents';
 
 export default function LoginPage () {
-    const {setUserData} = useContext(UserContext);
-    const [signUp,setSignUp] = useState(false);
-    const [clicked,setClicked] = useState(false);
-    const [email,setEmail] = useState('');
-    const [password,setPassword] = useState('');
-    const [username,setUsername] = useState('');
-    const [pictureUrl,setPictureUrl] = useState('');
+    const { setUserData } = useContext(UserContext);
+    const [ signUp, setSignUp ] = useState(false);
+    const [ clicked, setClicked ] = useState(false);
+    const [ email, setEmail ] = useState('');
+    const [ password, setPassword ] = useState('');
+    const [ username, setUsername ] = useState('');
+    const [ pictureUrl, setPictureUrl ] = useState('');
     let history = useHistory();
-
 
     function validateForm () {
         return signUp 
@@ -31,10 +30,9 @@ export default function LoginPage () {
             processRequest();
         }
         else {
-            alert('Por favor, preencha todos os campos');
+            alert('Please, fill in all required entry fields');
         }
     }
-
 
     function processRequest () {
         signUp
@@ -42,28 +40,23 @@ export default function LoginPage () {
             : sendRequest({email, password},'in'); 
     }
 
-
     function sendRequest (userObj,goal) {
         const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/sign_${goal}`,userObj);
         request.then( response => {loginSucceeded(response)} ).catch( error => {loginFailed(error)} );
     }
 
-
     function loginFailed (error) {
         setClicked(false);
         const errorCode = error.response.status;
-        errorCode === 400 && alert('O e-mail inserido já está cadastrado');           
-        errorCode === 401 && alert('E-mail/senha incorretos');
+        errorCode === 400 && alert('This e-mail address is already registered');           
+        errorCode === 401 && alert('E-mail/password incorrect');
     }
-
 
     function loginSucceeded (response) {
         setUserData({...response.data});
         history.push('/timeline');
     }
   
-
-    
     return (
         <MainContainer>
 
@@ -75,30 +68,30 @@ export default function LoginPage () {
             </LogoContainer>
 
             <LoginContainer>
-                <form onSubmit={(event) => submitForm(event)}>
 
+                <form onSubmit={(event) => submitForm(event)}>
                     <input type="email" placeholder="e-mail" onChange={(e) => setEmail(e.target.value)} value={email}/>
                     <input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} value={password}/>
 
-                    { signUp && <input type="text" placeholder="username" onChange={(e) => setUsername(e.target.value)} value={username}/>}
-                    { signUp && <input type="text" placeholder="picture url" onChange={(e) => setPictureUrl(e.target.value)} value={pictureUrl}/>}
+                    {signUp && <input type="text" placeholder="username" onChange={(e) => setUsername(e.target.value)} value={username}/>}
+                    {signUp && <input type="text" placeholder="picture url" onChange={(e) => setPictureUrl(e.target.value)} value={pictureUrl}/>}
 
-                    {   signUp
+                    { signUp
                         ? <button type="submit">Sign Up</button> 
                         : <button type="submit">Log in</button>  
-                    }                  
+                    }                 
                 </form>
 
-                {   signUp
+                { signUp
                     ?  <p onClick={() => setSignUp(!signUp)}>Switch back to log in</p>
                     :  <p onClick={() => setSignUp(!signUp)}>First time? Create an account!</p> 
                 } 
+
             </LoginContainer>
 
         </MainContainer>
     );
 }
-
 
 const MainContainer = styled.section`
     color: #FFF;
@@ -143,7 +136,6 @@ const LogoContainer = styled.div`
         }
     }
 `;
-
 
 const LoginContainer = styled.div`
     align-items: center;
@@ -203,10 +195,4 @@ const LoginContainer = styled.div`
         margin-top: 20px;
         width: 100%;
     }
-`;
-
-const StyledForm = styled.form`
-   
-
-
 `;

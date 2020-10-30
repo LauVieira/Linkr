@@ -1,31 +1,37 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link,useHistory } from 'react-router-dom';
-import ReactHashtag from "react-hashtag";
+import ReactHashtag from 'react-hashtag';
 import { media } from '../components/SmallerComponents';
 
 
 export default function LayOutPosts (props) {
     let history = useHistory();
-    const {user,text,linkTitle,linkImage,linkDescription,link} = props.post;
-    const {id,username,avatar} = user;
+    const { user, text, linkTitle, linkImage, linkDescription, link } = props.post;
+    const { id, username, avatar } = user;
     const linkTo = `/user/${id}`;
-
 
     function openHashtag (hashtag) {
         const hashtagName = hashtag.slice(1);
         history.push(`/hashtag/${hashtagName}`);
     }
 
-
     return (
         <PostContainer>
 
-            <div className='post-left'><Link to={linkTo}><img src={avatar} /></Link></div>
+            <div className='post-left'><Link to={linkTo}>
+                <img src={avatar} />
+            </Link></div>
 
             <div className='post-right'>
-                <h2><Link to={linkTo}>{username}</Link></h2>
-                <p><ReactHashtag onHashtagClick={ hashtag => openHashtag(hashtag)}>{text}</ReactHashtag></p>
+
+                <h2><Link to={linkTo}>
+                    {username}
+                </Link></h2>
+                
+                <p><ReactHashtag onHashtagClick={hashtag => openHashtag(hashtag)}>
+                    {text}
+                </ReactHashtag></p>
 
                 <LinkContainer>
                     <div>
@@ -33,14 +39,15 @@ export default function LayOutPosts (props) {
                         <p>{linkDescription}</p>
                         <a href={link} target='_blank'>{link}</a>
                     </div>
+                    
                     <img src={linkImage} />
                 </LinkContainer>
+
             </div>
 
         </PostContainer>
     );
 }
-
 
 const PostContainer = styled.article`
     background: #151515;
@@ -54,7 +61,6 @@ const PostContainer = styled.article`
     padding: 25px;
     width: 600px;
 
-
     .post-left {
         height: 100%;
         margin-right: 20px;
@@ -66,7 +72,6 @@ const PostContainer = styled.article`
         }
     }
     
-
     .post-right {
         display: flex;
         flex-direction: column;
@@ -107,7 +112,6 @@ const PostContainer = styled.article`
         }
     }
 `;
-
 
 const LinkContainer = styled.div`
     border: 1px solid #404040;
@@ -158,16 +162,3 @@ const LinkContainer = styled.div`
         }
     }
 `;
-
-
-/*
-[16:22, 28/10/2020] +55 21 96569-7700: <p><ReactHashtag onHashtagClick={val => HashtagPage(val)}>
-    {post.text} // comentário da pessoa completo
-</ReactHashtag></p>
-[16:22, 28/10/2020] +55 21 96569-7700: Ele identifica a hashtag dentro do texto
-[16:22, 28/10/2020] +55 21 96569-7700: pra estilizar, ele considera hashtag como span
-*/
-
-// onHashtagClick={val => console.log(val)} #hoho
-
-///hashtag/:hashtag" em que :hashtag é o nome da hashtag (sem #)
