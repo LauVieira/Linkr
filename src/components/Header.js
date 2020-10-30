@@ -1,13 +1,13 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components'
 import { IoIosArrowDown } from 'react-icons/io';
-import UserContext from '../contexts/UserContext'
 import { Link } from 'react-router-dom';
-import {media} from '../components/SmallerComponents';
+import { media } from '../components/SmallerComponents';
+import UserContext from '../contexts/UserContext'
 
 export default function Header () {
-    const { userData, setUserData } = useContext(UserContext);
     const [ OpenMenu, SetOpenMenu ] = useState(false);
+    const { userData, setUserData } = useContext(UserContext);
 
     return (
         <StyledHeader>
@@ -38,21 +38,21 @@ export default function Header () {
 }
 
 const StyledHeader = styled.div `
-    width: 100%;
-    height: 70px;
+    align-items: center;
     background-color: #151515;
     display: flex;
+    height: 70px;
     justify-content: space-between;
     left: 0;
-    align-items: center;
     padding: 0 30px; 
     position: fixed;
     top: 0;
+    width: 100%;
 
     img {
+        border-radius: 50%;
         height: 50px;
         width: 50px;
-        border-radius: 50%;
     }
 
     ${media} {
@@ -73,10 +73,10 @@ const Linkr = styled.p `
 
 const Menu = styled.div`
     align-items: center;
-    position: relative;
-    display: flex;
     color: #FFF;
+    display: flex;
     margin-right: 10px;
+    position: relative;
 
     div {
         font-size: 40px;
@@ -85,20 +85,20 @@ const Menu = styled.div`
     }
 
     nav {
+        background: #151515;
+        border-bottom-left-radius: 25px;
         display:flex;
         flex-direction:column;
         font: 700 20px 'Lato', sans-serif;
-        top: 50px;
-        position: absolute;
-        background: #151515;
-        border-bottom-left-radius: 25px;
-        width: 170px;
-        right: -40px;
         opacity: ${props => props.opacity};
-        text-align: center;
-        transition: 400ms ease;
         padding: 20px;
+        position: absolute;
+        right: -40px;
+        text-align: center;
+        top: 50px;
+        transition: 400ms ease;
         transform: ${props => props.translate};
+        width: 170px;
     }
 
     a {

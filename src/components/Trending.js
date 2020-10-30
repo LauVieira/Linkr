@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
 import { Link } from "react-router-dom";
-import UserContext from '../contexts/UserContext';
+import axios from 'axios';
+import styled from 'styled-components';
 import { media } from '../components/SmallerComponents';
+import UserContext from '../contexts/UserContext';
 
 export default function Trending () {
-    const { header } = useContext(UserContext);
     const [ hashtags, setHashtags ] = useState([]);
+    const { header } = useContext(UserContext);
 
     useEffect( () => {
         const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/hashtags/trending', header);
@@ -46,18 +46,17 @@ const ContainerTrending = styled.div `
     .title {
         border-bottom: 1px solid #222;
         font: 700 27px 'Oswald', sans-serif;
-        line-height: 3rem;
         letter-spacing: 0.05rem;
+        line-height: 3rem;
         padding: 20px;
     }
 
     .hashtag {
         font: 700 19px 'Lato', sans-serif; 
         letter-spacing: 0.05rem;
+        line-height: 1.3rem;
         margin: 10px 0;
         padding: 20px;
-        line-height: 1.3rem;
-        font-weight: 700;
 
         p {
             margin-bottom: 10px;

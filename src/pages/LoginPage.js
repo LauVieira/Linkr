@@ -7,12 +7,12 @@ import {media} from '../components/SmallerComponents';
 
 export default function LoginPage () {
     const { setUserData } = useContext(UserContext);
-    const [ signUp, setSignUp ] = useState(false);
     const [ clicked, setClicked ] = useState(false);
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
-    const [ username, setUsername ] = useState('');
     const [ pictureUrl, setPictureUrl ] = useState('');
+    const [ signUp, setSignUp ] = useState(false);
+    const [ username, setUsername ] = useState('');
     let history = useHistory();
 
     function validateForm () {

@@ -1,17 +1,18 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import UserContext from '../contexts/UserContext';
-import Trending from '../components/Trending';
+import Header from '../components/Header';
 import LayOutPosts from '../components/LayOutPosts';
+import Trending from '../components/Trending';
+import UserContext from '../contexts/UserContext';
 import { media, Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
 
 export default function TimelinePage () {
     const { userData, header } = useContext(UserContext);
-    const [ postsList, setPostsLists ] = useState([]);
-    const [ userLink, setUserLink ] = useState('');
-    const [ userComment, setUserComment ] = useState('');
     const [ clicked, setClicked ] = useState(false);
+    const [ postsList, setPostsLists ] = useState([]);
+    const [ userComment, setUserComment ] = useState('');
+    const [ userLink, setUserLink ] = useState('');
 
     useEffect(getPostsList,[]);
 
@@ -63,6 +64,8 @@ export default function TimelinePage () {
 
     return (
         <>
+            <Header />
+
             { postsList.length === 0
 
                 ? <Loading />

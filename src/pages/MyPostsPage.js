@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import UserContext from '../contexts/UserContext';
-import Trending from '../components/Trending';
+import Header from '../components/Header';
 import LayOutPosts from '../components/LayOutPosts';
+import Trending from '../components/Trending';
+import UserContext from '../contexts/UserContext';
 import { Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
 
 export default function MyPostsPage () {
@@ -19,6 +20,8 @@ export default function MyPostsPage () {
 
     return (
         <>
+            <Header />
+
             { myPosts.length === 0
 
                 ? <Loading />

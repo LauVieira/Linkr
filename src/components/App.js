@@ -5,12 +5,11 @@ import {
   Route
 } from 'react-router-dom';
 import HashtagPage from '../pages/HashtagPage';
-import Header from '../components/Header';
 import LoginPage from '../pages/LoginPage';
 import MyPostsPage from '../pages/MyPostsPage';
 import TimelinePage from '../pages/TimelinePage';
 import UserPage from '../pages/UserPage';
-import {UserContextProvider} from '../contexts/UserContext';
+import { UserContextProvider } from '../contexts/UserContext';
 
 export default function App () {
     
@@ -19,22 +18,10 @@ export default function App () {
             <Switch>
                 <UserContextProvider>
                     <Route path='/' exact component={LoginPage} />
-                    <Route path='/timeline' exact>
-                        <Header />
-                        <TimelinePage />
-                    </Route>
-                    <Route path='/my-posts' exact>
-                        <Header />
-                        <MyPostsPage />
-                    </Route>
-                    <Route path='/user/:id' exact>
-                        <Header />
-                        <UserPage />
-                    </Route>
-                    <Route path='/hashtag/:hashtag' exact>
-                        <Header />
-                        <HashtagPage />
-                    </Route>
+                    <Route path='/timeline' exact component={TimelinePage} />
+                    <Route path='/my-posts' exact component={MyPostsPage} />
+                    <Route path='/user/:id' exact component={UserPage} />
+                    <Route path='/hashtag/:hashtag' exact component={HashtagPage} />
                 </UserContextProvider>
             </Switch>
         </Router>

@@ -1,15 +1,16 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
-import UserContext from '../contexts/UserContext';
-import Trending from '../components/Trending';
+import Header from '../components/Header';
 import LayOutPosts from '../components/LayOutPosts';
+import Trending from '../components/Trending';
+import UserContext from '../contexts/UserContext';
 import { Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
 
 export default function UserPage () {
-    const { header } = useContext(UserContext);
     const hashtagName = useParams().hashtag;
     const [ hashtagPosts, setHashtagPosts ] = useState([]);
+    const { header } = useContext(UserContext);
 
     useEffect(getIdsPosts,[hashtagName]);
 
@@ -20,7 +21,9 @@ export default function UserPage () {
     }
 
     return (
-        <>
+        <>  
+            <Header />
+
             { hashtagPosts.length === 0
             
                 ? <Loading />

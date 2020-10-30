@@ -1,15 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Link,useHistory } from 'react-router-dom';
 import ReactHashtag from 'react-hashtag';
+import styled from 'styled-components';
 import { media } from '../components/SmallerComponents';
 
 
 export default function LayOutPosts (props) {
-    let history = useHistory();
     const { user, text, linkTitle, linkImage, linkDescription, link } = props.post;
     const { id, username, avatar } = user;
     const linkTo = `/user/${id}`;
+    let history = useHistory();
 
     function openHashtag (hashtag) {
         const hashtagName = hashtag.slice(1);
