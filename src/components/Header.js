@@ -23,7 +23,6 @@ export default function Header () {
 
             <div onClick={() => SetOpenMenu(!OpenMenu)}>
                 <Menu
-                 opacity={OpenMenu? '1':'0'}
                  translate={OpenMenu? 'translateY(0)':'translateY(-290px)'}
                  rotate={OpenMenu? 'rotate(180deg)':'rotate(0)'}
                 >
@@ -108,7 +107,6 @@ const Menu = styled.div`
         transition: 400ms ease;
         padding: 20px;
         transform: ${props => props.translate};
-        opacity: ${props => props.opacity};
 
         z-index: 0;
     }
