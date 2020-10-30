@@ -14,7 +14,7 @@ import { UserContextProvider } from '../contexts/UserContext';
 export default function App () {
     
     return (    
-        <Router>
+        <Router basename='/Linkr'>
             <Switch>
                 <UserContextProvider>
                     <Route path='/' exact component={LoginPage} />
