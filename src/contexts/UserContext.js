@@ -1,5 +1,4 @@
-import React, { createContext,useContext, useState } from 'react';
-//import axios from 'axios';
+import React, { createContext,useState } from 'react';
 
 
 const UserContext = createContext();
@@ -10,11 +9,6 @@ export function UserContextProvider (props) {
     const [userData,setUserData] = useState({});
     const header = {headers: {"user-token": userData.token }};
 
-    // function headerConfig () {
-    //     const header = {headers: {"user-token": userData.token }}
-    //     return header;
-    // }
-
 
     return (
         <UserContext.Provider value = {{userData, setUserData, header}}>
@@ -22,7 +16,6 @@ export function UserContextProvider (props) {
         </UserContext.Provider>
     )
 }
-
 
 
 /*
@@ -39,18 +32,4 @@ userData{
         username: "Agata,aGata"
     }
 }
-*/
-
-
-
-
-
-/*
-
-function pedirQuizzes () {
-    var header = configurarHeader();
-    var requisicao = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/buzzquizz/quizzes',header);
-    requisicao.catch(exibirErro).then(carregarQuizzes);
-}
-
 */

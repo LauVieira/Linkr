@@ -1,8 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import { Link,useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from 'axios';
-import styled from 'styled-components';
 import UserContext from '../contexts/UserContext';
 import Trending from '../components/Trending';
 import LayOutPosts from '../components/LayOutPosts';
@@ -14,7 +12,7 @@ export default function UserPage () {
     let userId = useParams().id;
     const [userPosts,setUserPosts] = useState([]);
     const [title,setTitle] = useState('');
-    //Juvenal's posts
+
     
     useEffect(getUserPosts,[]);
 
@@ -27,7 +25,7 @@ export default function UserPage () {
 
     function userPostsSucceeded (response) {
         setUserPosts([...response.data.posts]);
-        setTitle(`${response.data.posts[0].user.username}`)
+        setTitle(`${response.data.posts[0].user.username}'s posts`)
     }
 
 
@@ -44,7 +42,7 @@ export default function UserPage () {
 
                 : <CurrentPage>
                     <div>
-                        <h1>timeline</h1>
+                        <h1>{title}</h1>
                         <div>
                             <PostsListContainer>
                                 {userPosts.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}

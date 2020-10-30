@@ -4,6 +4,7 @@ import {IoIosArrowDown} from 'react-icons/io';
 import UserContext from '../contexts/UserContext'
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
+import {media} from '../components/SmallerComponents';
 
 
 
@@ -31,7 +32,7 @@ export default function Header () {
                     <nav>
                         <Link to='/my-posts'>My posts</Link>
                         <Link to='/'>My likes</Link>
-                        <Link to='/' onClick={ () => setUserData([...[]])}>Logout</Link>
+                        <Link to='/' onClick={ () => setUserData({...{}})}>Logout</Link>
                     </nav>
                 </Menu>
                 
@@ -49,7 +50,7 @@ const StyledHeader = styled.div `
     justify-content: space-between;
     left: 0;
     align-items: center;
-    padding: 0 2rem 0 2rem; 
+    padding: 0 30px; 
     position: fixed;
     top: 0;
 
@@ -58,16 +59,21 @@ const StyledHeader = styled.div `
         width: 50px;
         border-radius: 50%;
     }
+
+    ${media} {
+        padding: 0 20px;
+
+        img {
+            height: 40px;
+            width: 40px;
+        }
+    }
 `;
 
-const Linkr = styled.div `
-    width: 10%;
-    font-size: 3.1rem;
+const Linkr = styled.p `
     color: white;
-    font-family: 'Passion One', cursive;
-    font-weight: 700;
+    font: 700 3.1rem 'Passion One', cursive;
     letter-spacing: 0.05rem;
-    
 `;
 
 
@@ -77,24 +83,26 @@ const Menu = styled.div`
     position: relative;
     display: flex;
     color: #FFF;
-    font-size: 3vw;
     margin-right: 10px;
 
     div {
+        font-size: 40px;
+        margin-right: 5px;
         transform: ${props => props.rotate};
     }
 
     nav {
         display:flex;
         flex-direction:column;
-        font: 700 1.5vw 'Lato', sans-serif;
-        top:50px;
+        font: 700 20px 'Lato', sans-serif;
+        top: 50px;
         position: absolute;
-        background:#151515;
+        background: #151515;
         border-bottom-left-radius: 25px;
-        width: 200px;
-        right: -63px;
+        width: 170px;
+        right: -40px;
         opacity: ${props => props.opacity};
+        text-align: center;
         transition: 400ms ease;
         padding: 20px;
         transform: ${props => props.translate};
@@ -103,4 +111,23 @@ const Menu = styled.div`
     a {
         padding: 10px;
     }
+
+    ${media} {
+
+        div {
+            font-size: 20px;
+        }
+
+        nav {
+            font-size: 14px;
+            padding: 10px;
+            right: -30px;
+            width: 130px;
+
+            a {
+                padding: 5px;
+            }
+        }
+    }
+
 `;

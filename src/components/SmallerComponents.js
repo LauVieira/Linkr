@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 
+export const media = '@media (max-width: 800px)';
+
+
 export function Loading () {
     return (
         <LoadingWrapper><img src='/images/loading.gif' /><p>Loading, please wait :)</p></LoadingWrapper>
@@ -63,6 +66,17 @@ const CurrentPageWrapper = styled.section`
         color: #FFF;
         font: 700 40px 'Oswald', sans-serif;
         margin: 50px 0;
+    }
+
+    ${media} {
+        h1 {
+            font-size: 30px;
+            margin: 15px;
+        }
+
+        & > div {
+            width: 100vw;
+        }
     }
 `;
 
