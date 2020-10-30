@@ -3092,7 +3092,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 var media = '@media (max-width: 800px)';
 function Loading() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(LoadingWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-    src: "/images/loading.gif"
+    src: "/Linkr/images/loading.gif"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "Loading, please wait :)"));
 }
 function CurrentPage(props) {
