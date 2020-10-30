@@ -13,7 +13,7 @@ export default function Header () {
         <StyledHeader>
 
             <Linkr> 
-            <Link to='/timeline'> linkr </Link>
+                <Link to='/timeline'> linkr </Link>
             </Linkr>
 
             <div onClick={() => SetOpenMenu(!OpenMenu)}>
