@@ -19,6 +19,7 @@ export default function Header () {
             <div onClick={() => SetOpenMenu(!OpenMenu)}>
                 <Menu
                  translate={OpenMenu? 'translateY(0)':'translateY(-290px)'}
+                 opacity={OpenMenu? 1 : 0}
                  rotate={OpenMenu? 'rotate(180deg)':'rotate(0)'}
                 >
                     <div><IoIosArrowDown  /></div>
@@ -47,21 +48,10 @@ const StyledHeader = styled.div `
     position: fixed;
     top: 0;
     width: 100%;
-
-    
-    img {
-        border-radius: 50%;
-        height: 50px;
-        width: 50px;
-    }
+    z-index: 2;
 
     ${media} {
         padding: 0 20px;
-
-        img {
-            height: 40px;
-            width: 40px;
-        }
     }
 `;
 
@@ -76,14 +66,19 @@ const Menu = styled.div`
     color: #FFF;
     display: flex;
     margin-right: 10px;
-    z-index:3;
-
 
     div {
         font-size: 40px;
-        margin-right: 50px;
+        margin-right: 10px;
         transform: ${props => props.rotate};
+        z-index: 2;
+    }
 
+    img {
+        border-radius: 50%;
+        height: 50px;
+        width: 50px;
+        z-index: 2;
     }
 
     nav {
@@ -94,15 +89,14 @@ const Menu = styled.div`
         font: 700 20px 'Lato', sans-serif;
         opacity: ${props => props.opacity};
         padding: 20px;
-        position: absolute;
-        right: -40px;
+        position: fixed;
+        right: 0px;
         text-align: center;
         top: 50px;
         transition: 400ms ease;
         transform: ${props => props.translate};
         width: 170px;
-
-        z-index: 0;
+        z-index: 1;
     }
 
     a {
@@ -115,10 +109,14 @@ const Menu = styled.div`
             font-size: 20px;
         }
 
+        img {
+            height: 40px;
+            width: 40px;
+        }
+
         nav {
             font-size: 14px;
             padding: 10px;
-            right: -30px;
             width: 130px;
 
             a {
