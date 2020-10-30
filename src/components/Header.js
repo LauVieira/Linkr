@@ -9,6 +9,14 @@ export default function Header () {
     const [ OpenMenu, SetOpenMenu ] = useState(false);
     const { userData, setUserData } = useContext(UserContext);
 
+    function releaseMenu (event) {
+        if (!OpenMenu) event.preventDefault();
+    }
+
+    function releaseMenuLogOut (event) {
+        OpenMenu ? setUserData({...{}}) : event.preventDefault();
+    }
+
     return (
         <StyledHeader>
 
@@ -16,18 +24,19 @@ export default function Header () {
                 <Link to='/timeline'> linkr </Link>
             </Linkr>
 
-            <div onClick={() => SetOpenMenu(!OpenMenu)}>
+            <div>
                 <Menu
-                 translate={OpenMenu? 'translateY(0)':'translateY(-290px)'}
+                 translate={OpenMenu? 'translateY(0)':'translateY(-40px)'}
+                 opacity={OpenMenu? '1' : '0'}
                  rotate={OpenMenu? 'rotate(180deg)':'rotate(0)'}
                 >
-                    <div><IoIosArrowDown  /></div>
+                    <div onClick={() => SetOpenMenu(!OpenMenu)}><IoIosArrowDown  /></div>
                     <img src={userData.user.avatar}/>
 
                     <nav>
-                        <Link to='/my-posts'>My posts</Link>
-                        <Link to='/my-posts'>My likes</Link>
-                        <Link to='/' onClick={ () => setUserData({...{}})}>Logout</Link>
+                        <Link to='/my-posts' onClick={(event) => releaseMenu(event)}>My posts</Link>
+                        <Link to='/my-posts' onClick={(event) => releaseMenu(event)}>My likes</Link>
+                        <Link to='/' onClick={(event) => releaseMenuLogOut(event)}>Logout</Link>
                     </nav>
                 </Menu>
             </div>
@@ -87,6 +96,7 @@ const Menu = styled.div`
         display:flex;
         flex-direction:column;
         font: 700 20px 'Lato', sans-serif;
+        opacity: ${props => props.opacity};
         padding: 20px;
         position: fixed;
         right: 0px;
