@@ -4,7 +4,6 @@ import { media } from '../components/SmallerComponents';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import UserContext from '../contexts/UserContext';
 import axios from 'axios';
-//agataivanoff@yahoo.com.br
 
 // Em que pé estamos do Like: dar like e dislike funciona, mas só ao atualizar a página e ainda não re renderiza. Coração também está mudando de cor/preenchimento, mas só quando atualiza também.
 
