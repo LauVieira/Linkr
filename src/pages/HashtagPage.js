@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
 import LayOutPosts from '../components/LayOutPosts';
@@ -22,11 +22,9 @@ export default function UserPage () {
             setHashtagPosts([...postsList]);
         }
         else {
-            alert(`Sorry, we could find posts from ${hashtagName}`);
+            alert(`Sorry, we couldn't find posts from ${hashtagName}`);
             history.goBack();
         }
-        
-        
     }
 
     function getIdsPosts () {

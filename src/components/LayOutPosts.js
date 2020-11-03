@@ -2,30 +2,34 @@ import React from 'react';
 import { Link,useHistory } from 'react-router-dom';
 import ReactHashtag from 'react-hashtag';
 import styled from 'styled-components';
-import { media } from '../components/SmallerComponents';
-
+import { media } from './SmallerComponents';
+import LikeButton from './LikeButton';
 
 export default function LayOutPosts (props) {
-    const { user, text, linkTitle, linkImage, linkDescription, link } = props.post;
+    const { likes, user, text, linkTitle, linkImage, linkDescription, link } = props.post;
     const { id, username, avatar } = user;
-    const linkTo = `/user/${id}`;
+    const linkToUser = `/user/${id}`;
     let history = useHistory();
 
-    function openHashtag (hashtag) {
+    function openHashtag (hashtag) {                 //perguntar por clean code: melhor numa função ou em uma linha só no onClick?   :
         const hashtagName = hashtag.slice(1);
-        history.push(`/hashtag/${hashtagName}`);
+        history.push(`/hashtag/${hashtagName}`);           // onHashtagClick={ hashtag => history.push(`/hashtag/${hashtag.slice(1)}`) }  ????
     }
 
     return (
         <PostContainer>
 
-            <div className='post-left'><Link to={linkTo}>
-                <img src={avatar} />
-            </Link></div>
+            <div className='post-left'>
+                <Link to={linkToUser}>
+                    <img src={avatar} />
+                </Link>
+
+                <LikeButton likes={likes} user={user} postId={props.post.id}/>
+            </div>
 
             <div className='post-right'>
 
-                <h2><Link to={linkTo}>
+                <h2><Link to={linkToUser}>
                     {username}
                 </Link></h2>
                 
@@ -62,12 +66,15 @@ const PostContainer = styled.article`
     width: 600px;
 
     .post-left {
+        font-size: 12px;
         height: 100%;
         margin-right: 20px;
+        text-align: center;
 
         img {
             border-radius: 50%;
             height: 50px;
+            margin-bottom: 15px;
             width: 50px;
         }
     }
@@ -162,3 +169,34 @@ const LinkContainer = styled.div`
         }
     }
 `;
+
+
+/*   props.post:
+
+id: 198
+likes: Array(3)
+    0:
+    createdAt: "2020-10-30T22:11:36.104Z"
+    id: 539
+    postId: 198
+    updatedAt: "2020-10-30T22:11:36.104Z"
+    user.id: 87
+    user.username: "plazzinga_"
+    userId: 87
+    __proto__: Object
+    1: {id: 550, userId: 49, postId: 198, createdAt: "2020-10-30T22:12:29.182Z", updatedAt: "2020-10-30T22:12:29.182Z", …}
+    2: {id: 573, userId: 59, postId: 198, createdAt: "2020-10-30T22:36:46.621Z", updatedAt: "2020-10-30T22:36:46.621Z", …}
+    length: 3
+    __proto__: Array(0)
+link: "https://app.slack.com/client/T018FQDU2KB/D0197E68P6E"
+linkDescription: ""
+linkImage: ""
+linkTitle: "Slack"
+text: "Confia no pai"
+user:
+    avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/57/avatar"
+    id: 57
+    username: "Silmar"
+
+*/
+

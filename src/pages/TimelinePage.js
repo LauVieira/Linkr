@@ -36,7 +36,7 @@ export default function TimelinePage () {
             sendPost(formatObj());
         }
         else {
-            alert("Sorry, you can't publish without a link");
+            alert(`Sorry, you can't publish without a link`);
         }
     }
 
@@ -108,15 +108,15 @@ function UserInput (props) {
 
                 <h2>What do you want to bookmark today?</h2>
 
-                <input type="url" 
-                    placeholder="https//..." 
+                <input type='url' 
+                    placeholder='https//...' 
                     onChange={(e) => setUserLink(e.target.value)} 
                     value={userLink} 
                     disabled={clicked}
                 />
 
-                <input type="text" 
-                    placeholder="Would you like to leave a comment?" 
+                <input type='text' 
+                    placeholder='Would you like to leave a comment?' 
                     onChange={(e) => setUserComment(e.target.value)} 
                     value={userComment} 
                     disabled={clicked}
@@ -124,7 +124,7 @@ function UserInput (props) {
 
                 {   clicked
                     ? <button disabled={clicked}>Publishing...</button> 
-                    : <button type="submit">Publish</button>  
+                    : <button type='submit'>Publish</button>  
                 }  
 
             </form>

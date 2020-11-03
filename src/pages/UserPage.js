@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
 import LayOutPosts from '../components/LayOutPosts';
