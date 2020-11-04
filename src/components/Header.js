@@ -3,16 +3,18 @@ import styled from 'styled-components'
 import { IoIosArrowDown } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import { media } from '../components/SmallerComponents';
-import UserContext from '../contexts/UserContext'
+import UserContext from '../contexts/UserContext';
 
 //agataivanoff@yahoo.com.br
 // vou armazenar em contexto as contas seguidas pelo usuário???
 // consertar not do margin-bottom li
+// consetar cor do input e do placeholder
+// mudar condição para exibir a <ul>
 
 export default function Header () {
     const [ OpenMenu, SetOpenMenu ] = useState(false);
     const { userData, setUserData } = useContext(UserContext);
-    const [accountSearched, setAccountSearched] = useState('teste');
+    const [accountSearched, setAccountSearched] = useState('');
 
     function releaseMenu (event) {
         if (!OpenMenu) event.preventDefault();
@@ -33,13 +35,15 @@ export default function Header () {
                 <form>
                     <input placeholder='Search for people and friends'/>
                 </form>
-                <ul>
-                    <AccountFound avatar={userData.user.avatar}/>
-                    <AccountFound avatar={userData.user.avatar}/>
-                    <AccountFound avatar={userData.user.avatar}/>
-                    <AccountFound avatar={userData.user.avatar}/>
-                    <AccountFound avatar={userData.user.avatar}/>
-                </ul>
+                { accountSearched.length > 3 &&
+                    <ul>
+                        <AccountFound avatar={userData.user.avatar}/>
+                        <AccountFound avatar={userData.user.avatar}/>
+                        <AccountFound avatar={userData.user.avatar}/>
+                        <AccountFound avatar={userData.user.avatar}/>
+                        <AccountFound avatar={userData.user.avatar}/>
+                    </ul>
+                }
             </SearchField>
 
             <div>

@@ -6,21 +6,28 @@ import Header from '../components/Header';
 import LayOutPosts from '../components/LayOutPosts';
 import Trending from '../components/Trending';
 import UserContext from '../contexts/UserContext';
+import FollowingContext from '../contexts/FollowingContext';
 import { Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
 
 //agataivanoff@yahoo.com.br
 //falar com a luanna do align self
+//posso simplificar o button que está com os ternários?
+
+//https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/:followedUserId/follow
+//https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/:followedUserId/unfollow
 
 export default function UserPage () {
-    const { userData, header } = useContext(UserContext);
     let userId = useParams().id;          // Posso mudar pra const?
+    const { userData, header } = useContext(UserContext);
     const myUserId = userData.user.id;
+    const { followingList, updateFollowingList, checkIfFollowed } = useContext(FollowingContext);
     const [ userPosts, setUserPosts ] = useState([]);
     const [ title, setTitle ] = useState('');
     const [followedAccount, setFollowedAccount] = useState(false);
     const [requestProcessing, setRequestProcessing] = useState(false);
 
     useEffect(getUserPosts,[userId]);
+    // useEffect //checkIffollowed  //  usar const [followedAccount, setFollowedAccount] 
 
     function getUserPosts () {
         const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/${userId}/posts?offset=0&limit=10`,header);
@@ -34,11 +41,21 @@ export default function UserPage () {
     }
 
     function followUnfollow () {
-        console.log('hey');
+        console.log('followUnfollow');
+        //checkIffollowed  //  usar const [followedAccount, setFollowedAccount] 
+        postFollowUnfollow('follow');   //ou unfollow dependendo da linha anterior
     }
 
-    function requestFailed () {
-        alert(`Sorry, we couldn't complete this operation`);
+    function postFollowUnfollow (aim) {
+        console.log('postFollowUnfollow');
+        const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/${userId}/${aim}`,{},header);
+        request.then( response => {followUnfollowSucceeded(response)} );
+        request.catch( () => alert(`Sorry, it wasn't possible to complete this operation`) );
+    }
+
+    function followUnfollowSucceeded (response) {
+        console.log(response);
+        //updateFollowingList();
     }
 
     return (

@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import UserContext from '../contexts/UserContext'
-import {media} from '../components/SmallerComponents';
+import { media } from '../components/SmallerComponents';
 
 export default function LoginPage () {
     const { setUserData } = useContext(UserContext);

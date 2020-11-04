@@ -10,6 +10,7 @@ import MyPostsPage from '../pages/MyPostsPage';
 import TimelinePage from '../pages/TimelinePage';
 import UserPage from '../pages/UserPage';
 import { UserContextProvider } from '../contexts/UserContext';
+import { FollowingContextProvider } from '../contexts/FollowingContext';
 
 export default function App () {
     
@@ -17,11 +18,13 @@ export default function App () {
         <Router>
             <Switch>
                 <UserContextProvider>
-                    <Route path='/' exact component={LoginPage} />
-                    <Route path='/timeline' exact component={TimelinePage} />
-                    <Route path='/my-posts' exact component={MyPostsPage} />
-                    <Route path='/user/:id' exact component={UserPage} />
-                    <Route path='/hashtag/:hashtag' exact component={HashtagPage} />
+                    <FollowingContextProvider>
+                        <Route path='/' exact component={LoginPage} />
+                        <Route path='/timeline' exact component={TimelinePage} />
+                        <Route path='/my-posts' exact component={MyPostsPage} />
+                        <Route path='/user/:id' exact component={UserPage} />
+                        <Route path='/hashtag/:hashtag' exact component={HashtagPage} />
+                    </FollowingContextProvider>
                 </UserContextProvider>
             </Switch>
         </Router>

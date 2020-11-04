@@ -5,17 +5,20 @@ import Header from '../components/Header';
 import LayOutPosts from '../components/LayOutPosts';
 import Trending from '../components/Trending';
 import UserContext from '../contexts/UserContext';
+import FollowingContext from '../contexts/FollowingContext';
 import { media, Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
 
 export default function TimelinePage () {
     const { userData, header } = useContext(UserContext);
+    const { updateFollowingList } = useContext(FollowingContext);
     const [ clicked, setClicked ] = useState(false);
     const [ postsList, setPostsLists ] = useState([]);
     const [ userComment, setUserComment ] = useState('');
     const [ userLink, setUserLink ] = useState('');
 
+    useEffect(updateFollowingList,[]);             //Aqui é o melhor lugar pra chamar essa função pela primeira vez?
     useEffect(getPostsList,[]);
-
+    
     function getPostsList () {
         const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts?offset=0&limit=15',header);
         request.then( response => {postsListSucceeded(response)} );
