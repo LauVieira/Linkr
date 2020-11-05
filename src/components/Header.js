@@ -23,17 +23,22 @@ export default function Header () {
 
     function prepareSearch (nameSearched) {
         setAccountSearch(nameSearched);
-        if (accountSearch.length > 1) startSearch();   //mudar esse length
+        accountSearch.length > 1 ? startSearch() : setSearchResults([]);   //mudar esse length
     }
 
     function startSearch () {
         const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/search?username=${accountSearch}`,header);
-        request.then( response => {console.log(response.data.users)} );
+        request.then( response => {sortingSearch(response.data.users)} );
         request.catch( () => alert('There was an error when loading the posts, please refresh the page') );
     }
 
-
-    
+    function sortingSearch (originalList) {
+        const sortedList = [];
+        originalList.forEach (element => { 
+            element.isFollowingLoggedUser ? sortedList.unshift(element) : sortedList.push(element);
+        });
+        setSearchResults(sortedList);
+    }
 
     return (                //mudar props do searchField no futuro, pelo tamanho da lista de retorno da busca || mudar props do AccountFound
         <StyledHeader>
