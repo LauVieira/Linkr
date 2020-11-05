@@ -18,8 +18,8 @@ export default function UserPage () {
     const { updateFollowingList, checkIfFollowed } = useContext(FollowingContext);
     const [ userPosts, setUserPosts ] = useState([]);
     const [ title, setTitle ] = useState('');
-    const [followedAccount, setFollowedAccount] = useState(false);
-    const [requestProcessing, setRequestProcessing] = useState(false);
+    const [ followedAccount, setFollowedAccount ] = useState(false);
+    const [ requestProcessing, setRequestProcessing ] = useState(false);
 
     useEffect(getUserPosts,[userId]);
     useEffect( 
@@ -44,7 +44,6 @@ export default function UserPage () {
     }
 
     function postFollowUnfollow (aim) {
-        console.log(aim);
         const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/${userId}/${aim}`,{},header);
         request.then(followUnfollowSucceeded).catch(followUnfollowFailed);
     }

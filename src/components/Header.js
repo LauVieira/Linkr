@@ -7,6 +7,10 @@ import { media } from '../components/SmallerComponents';
 import UserContext from '../contexts/UserContext';
 import axios from 'axios';
 
+//agataivanoff@yahoo.com.br
+// mudar props de css do Menu
+// tratar pra quando o usuário clica no perfil que já está sendo exibido
+
 export default function Header () {
     const [ OpenMenu, SetOpenMenu ] = useState(false);
     const { header, userData, setUserData } = useContext(UserContext);
@@ -43,7 +47,7 @@ export default function Header () {
     return (                //mudar props do searchField no futuro, pelo tamanho da lista de retorno da busca || mudar props do AccountFound
         <StyledHeader>
 
-            <Linkr> 
+            <Linkr>
                 <Link to='/timeline'> linkr </Link>
             </Linkr>
 
@@ -54,9 +58,7 @@ export default function Header () {
                 </form>
                 { searchResults.length > 0 &&
                     <ul>
-                        <AccountFound avatar={userData.user.avatar}/>
-                        <AccountFound avatar={userData.user.avatar}/>
-                        <AccountFound avatar={userData.user.avatar}/>
+                        {searchResults.map( accountFound =>  <ListAccountsFound accountFound={accountFound} key={accountFound.id}/>)}
                     </ul>
                 }
             </SearchField>
@@ -82,17 +84,18 @@ export default function Header () {
     );
 }
 
-function AccountFound (props) {
-    const avatar = props.avatar;
-    const userName = 'Teste';
-    const following = true;   // isso vai ter que vir de algum contexto?
+function ListAccountsFound (props) {
+    const {id, username, avatar, isFollowingLoggedUser} = props.accountFound;
+    const linkToUser = `/user/${id}`;
 
     return (
-        <li>
-            <img src={avatar}/>
-            <p>{userName}</p>
-            {following && <span>following</span>}
-        </li>
+        <Link to={linkToUser}>
+            <li>
+                <img src={avatar}/>
+                <p>{username}</p>
+                {isFollowingLoggedUser && <span>following</span>}
+            </li>
+        </Link>
     );
 }
 
@@ -106,13 +109,6 @@ response.data.users
 2: {id: 100, username: "anelisepop", avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/100/avatar", isFollowingLoggedUser: false}
 length: 3
 */   
-
-
-//agataivanoff@yahoo.com.br
-// consertar not do margin-bottom li
-// consertar cor do input e do placeholder
-// mudar props de css do Menu]
-// rota pra conta buscada: `/user/${id}`
 
 
 const StyledHeader = styled.div `
