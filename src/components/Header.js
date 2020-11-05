@@ -5,17 +5,13 @@ import { MdSearch } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { media } from '../components/SmallerComponents';
 import UserContext from '../contexts/UserContext';
-
-//agataivanoff@yahoo.com.br
-// consertar not do margin-bottom li
-// consertar cor do input e do placeholder
-// mudar condição para exibir a <ul>
-// mudar props de css do Menu
+import axios from 'axios';
 
 export default function Header () {
     const [ OpenMenu, SetOpenMenu ] = useState(false);
-    const { userData, setUserData } = useContext(UserContext);
-    const [accountSearch, setAccountSearched] = useState('g54');
+    const { header, userData, setUserData } = useContext(UserContext);
+    const [ accountSearch, setAccountSearch ] = useState('');
+    const [ searchResults, setSearchResults ] = useState([]);
 
     function releaseMenu (event) {
         if (!OpenMenu) event.preventDefault();
@@ -24,6 +20,20 @@ export default function Header () {
     function releaseMenuLogOut (event) {
         OpenMenu ? setUserData({...{}}) : event.preventDefault();
     }
+
+    function prepareSearch (nameSearched) {
+        setAccountSearch(nameSearched);
+        if (accountSearch.length > 1) startSearch();   //mudar esse length
+    }
+
+    function startSearch () {
+        const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/search?username=${accountSearch}`,header);
+        request.then( response => {console.log(response.data.users)} );
+        request.catch( () => alert('There was an error when loading the posts, please refresh the page') );
+    }
+
+
+    
 
     return (                //mudar props do searchField no futuro, pelo tamanho da lista de retorno da busca || mudar props do AccountFound
         <StyledHeader>
@@ -34,13 +44,11 @@ export default function Header () {
 
             <SearchField searchDisplay={accountSearch.length}>
                 <form>
-                    <input placeholder='Search for people and friends'/>
+                    <input placeholder='Search for people and friends' onChange={(e) => prepareSearch(e.target.value)} value={accountSearch}/>
                     <MdSearch />
                 </form>
-                { accountSearch.length > 2 &&
+                { searchResults.length > 0 &&
                     <ul>
-                        <AccountFound avatar={userData.user.avatar}/>
-                        <AccountFound avatar={userData.user.avatar}/>
                         <AccountFound avatar={userData.user.avatar}/>
                         <AccountFound avatar={userData.user.avatar}/>
                         <AccountFound avatar={userData.user.avatar}/>
@@ -69,7 +77,6 @@ export default function Header () {
     );
 }
 
-
 function AccountFound (props) {
     const avatar = props.avatar;
     const userName = 'Teste';
@@ -83,6 +90,24 @@ function AccountFound (props) {
         </li>
     );
 }
+
+
+/*
+response.data.users
+
+(3) [{…}, {…}, {…}]
+0: {id: 46, username: "aninha", avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/46/avatar", isFollowingLoggedUser: true}
+1: {id: 90, username: "androlinhas", avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/90/avatar", isFollowingLoggedUser: false}
+2: {id: 100, username: "anelisepop", avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/100/avatar", isFollowingLoggedUser: false}
+length: 3
+*/   
+
+
+//agataivanoff@yahoo.com.br
+// consertar not do margin-bottom li
+// consertar cor do input e do placeholder
+// mudar props de css do Menu]
+// rota pra conta buscada: `/user/${id}`
 
 
 const StyledHeader = styled.div `
@@ -122,15 +147,17 @@ const SearchField = styled.div`
         input {
             background: #FFF;
             border-radius: 8px;
+            color: #515151;
             height: 45px;
             padding-left: 20px;
             width: 100%;
         }
         input::placeholder {
-            color: #E7E7E7;
+            color: #C6C6C6;
         }
 
         svg {
+            color: #C6C6C6;
             display: ${ props => props.searchDisplay > 0 ? 'none' : 'default'};
             font-size: 24px;
             position: absolute;
@@ -140,7 +167,7 @@ const SearchField = styled.div`
     }
 
     ul {
-        padding: 15px 20px;
+        padding: 0 20px 15px 20px;
 
         img {
             border-radius: 50%;
@@ -149,11 +176,9 @@ const SearchField = styled.div`
         }
 
         li {
-            display: flex;
             align-items: center;
-        }
-        li:not(last-child) {
-            margin-bottom: 10px;
+            display: flex;
+            margin-top: 15px;
         }
 
         p {

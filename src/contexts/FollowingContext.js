@@ -31,9 +31,6 @@ export function FollowingContextProvider (props) {
     );
 }
 
-
-
-//https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/follows
 //agataivanoff@yahoo.com.br
 
 
