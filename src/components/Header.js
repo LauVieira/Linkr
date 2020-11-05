@@ -1,15 +1,23 @@
 import React, { useContext, useState } from 'react';
-import styled from 'styled-components'
+import { DebounceInput } from 'react-debounce-input';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import axios from 'axios';
 import { IoIosArrowDown } from 'react-icons/io';
 import { MdSearch } from 'react-icons/md';
-import { Link } from 'react-router-dom';
 import { media } from '../components/SmallerComponents';
 import UserContext from '../contexts/UserContext';
-import axios from 'axios';
 
-//agataivanoff@yahoo.com.br
+// agataivanoff@yahoo.com.br
 // mudar props de css do Menu
 // tratar pra quando o usuário clica no perfil que já está sendo exibido
+// apagar pesquisa antes de mudar de página
+/*
+<DebounceInput
+    minLength={2}
+    debounceTimeout={300}
+onChange={event => this.setState({value: event.target.value})} />
+*/
 
 export default function Header () {
     const [ OpenMenu, SetOpenMenu ] = useState(false);
@@ -25,9 +33,9 @@ export default function Header () {
         OpenMenu ? setUserData({...{}}) : event.preventDefault();
     }
 
-    function prepareSearch (nameSearched) {
+    function prepareSearch (nameSearched) {    //é aqui o xabú, tá sempre um passo atrás
         setAccountSearch(nameSearched);
-        accountSearch.length > 1 ? startSearch() : setSearchResults([]);   //mudar esse length
+        accountSearch.length > 2 ? startSearch() : setSearchResults([]);   //mudar esse length
     }
 
     function startSearch () {
@@ -53,7 +61,12 @@ export default function Header () {
 
             <SearchField searchDisplay={accountSearch.length}>
                 <form>
-                    <input placeholder='Search for people and friends' onChange={(e) => prepareSearch(e.target.value)} value={accountSearch}/>
+                    <DebounceInput
+                        debounceTimeout={300}
+                        placeholder='Search for people and friends' 
+                        onChange={(e) => prepareSearch(e.target.value)} 
+                        value={accountSearch}
+                    />
                     <MdSearch />
                 </form>
                 { searchResults.length > 0 &&
@@ -135,7 +148,7 @@ const Linkr = styled.p `
 `;
 
 const SearchField = styled.div`
-    align-self: ${ props => props.searchDisplay > 2 ? 'baseline' : 'center'};
+    align-self: baseline;
     background: #E7E7E7;
     border-radius: 8px;
     font: 18px 'Lato', sans-serif;

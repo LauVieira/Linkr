@@ -20,6 +20,7 @@ export default function UserPage () {
     const [ title, setTitle ] = useState('');
     const [ followedAccount, setFollowedAccount ] = useState(false);
     const [ requestProcessing, setRequestProcessing ] = useState(false);
+    const [ isLoading, setIsLoading ] = useState (true);
 
     useEffect(getUserPosts,[userId]);
     useEffect( 
@@ -34,8 +35,25 @@ export default function UserPage () {
     }
 
     function userPostsSucceeded (response) {
-        setUserPosts([...response.data.posts]);
-        setTitle(`${response.data.posts[0].user.username}'s posts`);
+        if (response.data.posts.length) {
+            setUserPosts([...response.data.posts]);
+            setTitle(`${response.data.posts[0].user.username}'s posts`);
+            setIsLoading (false);
+        }
+        else {
+            getSingleUser();
+        }
+    }
+
+    function getSingleUser () {
+        const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/${userId}`,header);
+        request.then( response => {singleDataSucceeded(response)} );
+    }
+
+    function singleDataSucceeded (response) {
+        setTitle(`${response.data.user.username}'s posts`);
+        userId = response.data.user.id;
+        setIsLoading (false);
     }
 
     function followUnfollow () {
@@ -56,14 +74,14 @@ export default function UserPage () {
 
     function followUnfollowFailed () {
         setRequestProcessing(false);
-        alert(`Sorry, it wasn't possible to complete this operation`)
+        alert(`Sorry, it wasn't possible to complete this operation`);
     }
 
     return (
         <>
             <Header />
 
-            { userPosts.length === 0
+            { isLoading
 
                 ? <Loading />
 
@@ -81,9 +99,15 @@ export default function UserPage () {
                     
 
                     <div>
-                        <PostsListContainer>
-                            {userPosts.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}
-                        </PostsListContainer>
+                        { userPosts.length > 0
+                            ? <PostsListContainer>
+                                {userPosts.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}
+                              </PostsListContainer>
+                            : <NoPost>
+                                <img src='/images/noPosts.jpg' />
+                                <p>This user has no posts to be displayed</p>
+                              </NoPost>
+                        }
                         
                         <Trending />
                     </div>
@@ -109,6 +133,23 @@ const UserPageBasics = styled.div`
         text-align: center;
         width: 120px;
     }    
+`;
+
+const NoPost = styled.main`
+    align-items: center;
+    color: #FFF;
+    display: flex;
+    flex-direction: column;
+    font: 700 20px 'Lato', sans-serif;
+    height: 100%;
+    margin-right: 30px;
+    width: 600px;
+
+    img {
+        border-radius: 20px 0;
+        width: 300px;
+        margin-bottom: 10px;
+    }
 `;
 
 
