@@ -12,11 +12,17 @@ export function FollowingContextProvider (props) {
     function updateFollowingList () {
         console.log('trynna update');
         const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/follows',header);
-        request.then( response => {console.log(response.data)} );
+        request.then( response => {setFollowingList(response.data.users)} );
     }
 
     function checkIfFollowed (postUserId) {
-        console.log('testando2');
+        if (followingList.length === 0) return false;
+
+        let isFollowed = false;
+        followingList.forEach( userObj => {
+            if (parseInt(postUserId) === userObj.id) isFollowed = true;
+        });
+        return isFollowed;
     }
 
     return (
@@ -30,3 +36,15 @@ export function FollowingContextProvider (props) {
 
 //https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/follows
 //agataivanoff@yahoo.com.br
+
+
+/*
+0:
+    avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/42/avatar"
+    id: 42
+    username: "sammy"
+    __proto__: Object
+1: {id: 93, username: "aaaa", avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/93/avatar"}
+2: {id: 35, username: "klaussvp", avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/35/avatar"}
+3: {id: 82, username: "monalice", avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/82/avatar"}
+*/

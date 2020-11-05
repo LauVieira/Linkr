@@ -10,24 +10,22 @@ import FollowingContext from '../contexts/FollowingContext';
 import { Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
 
 //agataivanoff@yahoo.com.br
-//falar com a luanna do align self
-//posso simplificar o button que está com os ternários?
-
-//https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/:followedUserId/follow
-//https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/:followedUserId/unfollow
 
 export default function UserPage () {
     let userId = useParams().id;          // Posso mudar pra const?
     const { userData, header } = useContext(UserContext);
     const myUserId = userData.user.id;
-    const { followingList, updateFollowingList, checkIfFollowed } = useContext(FollowingContext);
+    const { updateFollowingList, checkIfFollowed } = useContext(FollowingContext);
     const [ userPosts, setUserPosts ] = useState([]);
     const [ title, setTitle ] = useState('');
     const [followedAccount, setFollowedAccount] = useState(false);
     const [requestProcessing, setRequestProcessing] = useState(false);
 
     useEffect(getUserPosts,[userId]);
-    // useEffect //checkIffollowed  //  usar const [followedAccount, setFollowedAccount] 
+    useEffect( 
+        () => setFollowedAccount(checkIfFollowed(userId)),
+    [userId]);
+   
 
     function getUserPosts () {
         const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/${userId}/posts?offset=0&limit=10`,header);
@@ -41,21 +39,20 @@ export default function UserPage () {
     }
 
     function followUnfollow () {
-        console.log('followUnfollow');
-        //checkIffollowed  //  usar const [followedAccount, setFollowedAccount] 
-        postFollowUnfollow('follow');   //ou unfollow dependendo da linha anterior
+        followedAccount ? postFollowUnfollow('unfollow') : postFollowUnfollow('follow'); 
     }
 
     function postFollowUnfollow (aim) {
-        console.log('postFollowUnfollow');
+        console.log(aim);
         const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/${userId}/${aim}`,{},header);
-        request.then( response => {followUnfollowSucceeded(response)} );
+        request.then(followUnfollowSucceeded);
         request.catch( () => alert(`Sorry, it wasn't possible to complete this operation`) );
     }
 
-    function followUnfollowSucceeded (response) {
-        console.log(response);
-        //updateFollowingList();
+    function followUnfollowSucceeded () {
+        updateFollowingList();
+        setFollowedAccount(!followedAccount);     // Não é a melhor opção, mas como lidar com a assincronicidade?
+        console.log('trynna update follow');
     }
 
     return (
@@ -109,3 +106,7 @@ const UserPageBasics = styled.div`
         width: 120px;
     }    
 `;
+
+
+//falar com a luanna do align self
+//posso simplificar o button que está com os ternários?
