@@ -39,20 +39,25 @@ export default function UserPage () {
     }
 
     function followUnfollow () {
+        setRequestProcessing(true);
         followedAccount ? postFollowUnfollow('unfollow') : postFollowUnfollow('follow'); 
     }
 
     function postFollowUnfollow (aim) {
         console.log(aim);
         const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/${userId}/${aim}`,{},header);
-        request.then(followUnfollowSucceeded);
-        request.catch( () => alert(`Sorry, it wasn't possible to complete this operation`) );
+        request.then(followUnfollowSucceeded).catch(followUnfollowFailed);
     }
 
     function followUnfollowSucceeded () {
+        setRequestProcessing(false);
         updateFollowingList();
         setFollowedAccount(!followedAccount);     // Não é a melhor opção, mas como lidar com a assincronicidade?
-        console.log('trynna update follow');
+    }
+
+    function followUnfollowFailed () {
+        setRequestProcessing(false);
+        alert(`Sorry, it wasn't possible to complete this operation`)
     }
 
     return (

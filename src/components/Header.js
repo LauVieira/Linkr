@@ -1,20 +1,21 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components'
 import { IoIosArrowDown } from 'react-icons/io';
+import { MdSearch } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { media } from '../components/SmallerComponents';
 import UserContext from '../contexts/UserContext';
 
 //agataivanoff@yahoo.com.br
-// vou armazenar em contexto as contas seguidas pelo usuário???
 // consertar not do margin-bottom li
-// consetar cor do input e do placeholder
+// consertar cor do input e do placeholder
 // mudar condição para exibir a <ul>
+// mudar props de css do Menu
 
 export default function Header () {
     const [ OpenMenu, SetOpenMenu ] = useState(false);
     const { userData, setUserData } = useContext(UserContext);
-    const [accountSearched, setAccountSearched] = useState('');
+    const [accountSearch, setAccountSearched] = useState('g54');
 
     function releaseMenu (event) {
         if (!OpenMenu) event.preventDefault();
@@ -31,11 +32,12 @@ export default function Header () {
                 <Link to='/timeline'> linkr </Link>
             </Linkr>
 
-            <SearchField searchDisplay={accountSearched.length > 3}>
+            <SearchField searchDisplay={accountSearch.length}>
                 <form>
                     <input placeholder='Search for people and friends'/>
+                    <MdSearch />
                 </form>
-                { accountSearched.length > 3 &&
+                { accountSearch.length > 2 &&
                     <ul>
                         <AccountFound avatar={userData.user.avatar}/>
                         <AccountFound avatar={userData.user.avatar}/>
@@ -107,7 +109,7 @@ const Linkr = styled.p `
 `;
 
 const SearchField = styled.div`
-    align-self: ${ props => props.searchDisplay? 'baseline' : 'center'};
+    align-self: ${ props => props.searchDisplay > 2 ? 'baseline' : 'center'};
     background: #E7E7E7;
     border-radius: 8px;
     font: 18px 'Lato', sans-serif;
@@ -115,14 +117,26 @@ const SearchField = styled.div`
 
     form {
         align-self: center;
-    }
-    input {
-        background: #FFF;
-        border-radius: 8px;
-        color: #E7E7E7;
-        height: 45px;
-        padding-left: 20px;
-        width: 100%;
+        position: relative;
+
+        input {
+            background: #FFF;
+            border-radius: 8px;
+            height: 45px;
+            padding-left: 20px;
+            width: 100%;
+        }
+        input::placeholder {
+            color: #E7E7E7;
+        }
+
+        svg {
+            display: ${ props => props.searchDisplay > 0 ? 'none' : 'default'};
+            font-size: 24px;
+            position: absolute;
+            right: 20px;
+            top: 9px;
+        }
     }
 
     ul {

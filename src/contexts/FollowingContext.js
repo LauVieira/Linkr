@@ -10,7 +10,6 @@ export function FollowingContextProvider (props) {
     const [ followingList, setFollowingList ] = useState([]);
     
     function updateFollowingList () {
-        console.log('trynna update');
         const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/follows',header);
         request.then( response => {setFollowingList(response.data.users)} );
     }
