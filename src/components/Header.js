@@ -64,6 +64,7 @@ export default function Header () {
                     />
                     <MdSearch />
                 </form>
+                
                 { searchResults.length > 0 &&
                     <ul>
                         {searchResults.map( accountFound =>  
