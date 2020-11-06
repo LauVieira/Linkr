@@ -7,8 +7,7 @@ import axios from 'axios';
 export default function LikeButton (props) {
     const { userData, header } = useContext(UserContext);
     const myUser = { id: userData.user.id, username: userData.user.username };
-    const { likes, user, postId} = props;
-    const { id, username } = user;
+    const { likes, postId} = props;
     const [ userLiked, setUserLiked ] = useState (false);
 
     useEffect(checkIfLiked,[]);
@@ -52,29 +51,3 @@ const LikeContainer = styled.div `
         font-size: 22px;
     }
 `;
-
-
-/*
-const { userData, header } = useContext(UserContext);
-userData:
-    token: "b1e7b642-890a-4ff2-8b49-dcf982d78ed9"
-    user:
-        avatar: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD"
-        email: "agataivanoff@yahoo.com.br"
-        id: 43
-        username: "Agata,aGata"
-*/
-
-
-/*   Resposta da requisição de like
-data:
-    post:
-        likes: Array(3)
-            0:
-                userId: 46
-                username: "aninha"
-
-            1: {userId: 43, username: "Agata,aGata"}
-            2: {userId: 49, username
-*/
-

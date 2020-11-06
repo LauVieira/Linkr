@@ -44,11 +44,10 @@ export default function LayOutPosts (props) {
         props.getPostsList();
     }
 
-    function errorHandle (error) {
-        console.error(error);
+    function errorHandle () {
         setIsLoading(false);
         setModalIsOpen(!modalIsOpen);
-        alert(`Sorry, we couln't delete your post`)
+        alert(`Sorry, we couln't delete your post`);
     }
 
     function sendEditedPostToServer() {
@@ -119,6 +118,7 @@ export default function LayOutPosts (props) {
                         setModalIsOpen = { setModalIsOpen }
                         Delete={Delete}
                         isLoading = { isLoading }
+                        className = 'modal-media'
                     />
 
                 </div>
@@ -232,6 +232,13 @@ const PostContainer = styled.article`
             img {
                 height: 40px;
                 width: 40px;
+            }
+        }
+
+        .post-right {
+            .modal-media {
+                width: 100vw;
+                margin: 0;
             }
         }
     }

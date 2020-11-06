@@ -8,7 +8,6 @@ import { MdSearch } from 'react-icons/md';
 import { media } from '../components/SmallerComponents';
 import UserContext from '../contexts/UserContext';
 
-
 export default function Header () {
     const [ openMenu, SetOpenMenu ] = useState(false);
     const { header, userData, setUserData } = useContext(UserContext);
@@ -63,6 +62,7 @@ export default function Header () {
                         onChange={(e) => prepareSearch(e.target.value)} 
                         value={accountSearch}
                     />
+
                     <MdSearch />
                 </form>
                 
@@ -80,6 +80,7 @@ export default function Header () {
                     <div onClick={() => SetOpenMenu(!openMenu)}>
                         <IoIosArrowDown  />
                     </div>
+
                     <img src={userData.user.avatar}/>
 
                     <nav>
@@ -107,6 +108,7 @@ function ListAccountsFound (props) {
 }
 
 const StyledHeader = styled.div `
+    align-items: center;
     background-color: #151515;
     display: flex;
     height: 70px;
@@ -119,7 +121,7 @@ const StyledHeader = styled.div `
     z-index: 2;
 
     ${media} {
-        padding: 0 20px;
+        padding: 10px 20px;
     }
 `;
 
@@ -190,7 +192,27 @@ const SearchField = styled.div`
             margin-right: 5px;
         }
     }
-    
+
+    ${media} {
+        font: 16px 'Lato', sans-serif;
+        left: 2vw;
+        position: absolute;
+        top: 75px;
+        width: 96vw;
+
+        form {
+            input {
+                padding-left: 15px;
+            }
+        }
+        
+        ul {
+            img {
+                height: 30px;
+                width: 30px;
+            }
+        }
+    }
 `;
 
 const Menu = styled.div`

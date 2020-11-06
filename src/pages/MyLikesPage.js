@@ -9,7 +9,7 @@ import { Loading, CurrentPage, PostsListContainer } from '../components/SmallerC
 export default function MyLikesPage () {
     const { header } = useContext(UserContext);
     const [ myLikes, setMyLikes ] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [ isLoading, setIsLoading ] = useState(true);
    
     useEffect(getPostsList,[]);
 

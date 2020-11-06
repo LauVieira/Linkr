@@ -7,7 +7,7 @@ import LayOutPosts from '../components/LayOutPosts';
 import Trending from '../components/Trending';
 import UserContext from '../contexts/UserContext';
 import FollowingContext from '../contexts/FollowingContext';
-import { Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
+import { media, Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
 
 export default function UserPage () {
     const userId = useParams().id;
@@ -138,8 +138,9 @@ const NoPost = styled.main`
         width: 300px;
         margin-bottom: 10px;
     }
+
+    ${media} {
+        font-size: 18px;
+        margin-right: 0;
+    }
 `;
-
-
-//falar com a luanna do align self
-//posso simplificar o button que está com os ternários?

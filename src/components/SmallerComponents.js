@@ -46,6 +46,9 @@ const LoadingWrapper = styled.div`
         font: 500 24px 'Passion One', cursive;
         margin-top: 10px;
     }
+    ${media} {
+        margin-top: 80px;
+    }
 `;
 
 const CurrentPageWrapper = styled.section`
@@ -67,6 +70,8 @@ const CurrentPageWrapper = styled.section`
     }
 
     ${media} {
+        padding-top: 120px;
+
         h1 {
             font-size: 30px;
             margin: 15px;

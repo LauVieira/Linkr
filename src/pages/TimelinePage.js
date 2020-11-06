@@ -7,10 +7,10 @@ import LayOutPosts from '../components/LayOutPosts';
 import Trending from '../components/Trending';
 import UserContext from '../contexts/UserContext';
 import FollowingContext from '../contexts/FollowingContext';
-import { media, Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
+import { Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
 
 export default function TimelinePage () {
-    const { userData, header } = useContext(UserContext);
+    const { header } = useContext(UserContext);
     const { followingList, updateFollowingList } = useContext(FollowingContext);
     const [ postsList, setPostsLists ] = useState([]);
     const [ isLoading, setIsLoading ] = useState(true);
