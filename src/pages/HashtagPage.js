@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
 import LayOutPosts from '../components/LayOutPosts';
@@ -13,7 +13,7 @@ export default function UserPage () {
     const { header } = useContext(UserContext);
     let history = useHistory();
 
-    useEffect(getIdsPosts,[hashtagName]);
+    useEffect(getPostsList,[hashtagName]);
 
     function sendHashtagPosts (response) {
         const postsList = response.data.posts;
@@ -22,14 +22,12 @@ export default function UserPage () {
             setHashtagPosts([...postsList]);
         }
         else {
-            alert(`Sorry, we could find posts from ${hashtagName}`);
+            alert(`Sorry, we couldn't find posts from ${hashtagName}`);
             history.goBack();
         }
-        
-        
     }
 
-    function getIdsPosts () {
+    function getPostsList () {
         const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/hashtags/${hashtagName}/posts?offset=0&limit=10`,header);
         request.then( response => { sendHashtagPosts(response) });
         request.catch( () => alert('There was an error when loading the posts, please refresh the page'));
@@ -48,7 +46,9 @@ export default function UserPage () {
                     
                     <div>
                         <PostsListContainer>
-                            {hashtagPosts.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}
+                            {hashtagPosts.map( eachPost => 
+                                <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> 
+                            )}
                         </PostsListContainer>
                         
                         <Trending />

@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import UserContext from '../contexts/UserContext'
-import {media} from '../components/SmallerComponents';
+import { media } from '../components/SmallerComponents';
 
 export default function LoginPage () {
     const { setUserData } = useContext(UserContext);
@@ -40,8 +40,8 @@ export default function LoginPage () {
             : sendRequest({email, password},'in'); 
     }
 
-    function sendRequest (userObj,goal) {
-        const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/sign_${goal}`,userObj);
+    function sendRequest (userObj,aim) {
+        const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/sign_${aim}`,userObj);
         request.then( response => {loginSucceeded(response)} ).catch( error => {loginFailed(error)} );
     }
 
@@ -67,18 +67,36 @@ export default function LoginPage () {
                 </div>
             </LogoContainer>
 
-            <LoginContainer>
+            <LoginContainer clicked={clicked}>
 
                 <form onSubmit={(event) => submitForm(event)}>
-                    <input type="email" placeholder="e-mail" onChange={(e) => setEmail(e.target.value)} value={email}/>
-                    <input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} value={password}/>
+                    <input type='email' 
+                        placeholder='e-mail' 
+                        onChange={(e) => setEmail(e.target.value)} 
+                        value={email}
+                    />
+                    
+                    <input type='password' 
+                        placeholder='password' 
+                        onChange={(e) => setPassword(e.target.value)} 
+                        value={password}
+                    />
 
-                    {signUp && <input type="text" placeholder="username" onChange={(e) => setUsername(e.target.value)} value={username}/>}
-                    {signUp && <input type="text" placeholder="picture url" onChange={(e) => setPictureUrl(e.target.value)} value={pictureUrl}/>}
+                    {signUp && <input type='text' 
+                        placeholder='username' 
+                        onChange={(e) => setUsername(e.target.value)} 
+                        value={username}
+                    />}
+
+                    {signUp && <input type='text' 
+                        placeholder='picture url' 
+                        onChange={(e) => setPictureUrl(e.target.value)} 
+                        value={pictureUrl}
+                    />}
 
                     { signUp
-                        ? <button type="submit">Sign Up</button> 
-                        : <button type="submit">Log in</button>  
+                        ? <button type='submit'>Sign Up</button> 
+                        : <button type='submit'>Log in</button>  
                     }                 
                 </form>
 
@@ -161,7 +179,7 @@ const LoginContainer = styled.div`
         width: 400px;
 
         button {
-            background: #1877F2;
+            background: ${ props => props.clicked ? '#CCC' : '#1877F2'};
             border-radius: 6px;
             padding: 10px;
             text-align: center;
