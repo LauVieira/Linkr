@@ -9,6 +9,9 @@ import UserContext from '../contexts/UserContext';
 import FollowingContext from '../contexts/FollowingContext';
 import { Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
 
+//agataivanoff@yahoo.com.br
+// Refatorar para começar com o single data e depois ver se tem post pra exibir
+
 export default function UserPage () {
     const userId = useParams().id;          // Posso mudar pra const?
     const { userData, header } = useContext(UserContext);
@@ -20,20 +23,11 @@ export default function UserPage () {
     const [ requestProcessing, setRequestProcessing ] = useState(false);
     const [ isLoading, setIsLoading ] = useState (true);
 
-    useEffect(getSingleUser,[userId]);
+    useEffect(getPostsList,[userId]);
     useEffect( 
         () => setFollowedAccount(checkIfFollowed(userId)),
     [userId]);
    
-    function getSingleUser () {
-        const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/${userId}`,header);
-        request.then( response => {singleDataSucceeded(response)} );
-    }
-
-    function singleDataSucceeded (response) {
-        setTitle(`${response.data.user.username}'s posts`);
-        getPostsList();
-    }
 
     function getPostsList () {
         const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/${userId}/posts?offset=0&limit=10`,header);
@@ -42,8 +36,25 @@ export default function UserPage () {
     }
 
     function userPostsSucceeded (response) {
-        setUserPosts([...response.data.posts]);
-        setIsLoading(false);
+        if (response.data.posts.length) {
+            setUserPosts([...response.data.posts]);
+            setTitle(`${response.data.posts[0].user.username}'s posts`);
+            setIsLoading(false);
+        }
+        else {
+            setUserPosts([]);           //mudar se der tempo
+            getSingleUser();
+        }
+    }
+
+    function getSingleUser () {
+        const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/${userId}`,header);
+        request.then( response => {singleDataSucceeded(response)} );
+    }
+
+    function singleDataSucceeded (response) {
+        setTitle(`${response.data.user.username}'s posts`);
+        setIsLoading (false);
     }
 
     function followUnfollow () {
