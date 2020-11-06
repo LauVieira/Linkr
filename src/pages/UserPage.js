@@ -13,9 +13,9 @@ export default function UserPage () {
     const [ userPosts, setUserPosts ] = useState([]);
     const [ title, setTitle ] = useState('');
 
-    useEffect(getUserPosts,[userId]);
+    useEffect(getPostsList,[userId]);
 
-    function getUserPosts () {
+    function getPostsList () {
         const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/${userId}/posts?offset=0&limit=10`,header);
         request.then( response => {userPostsSucceeded(response)} );
         request.catch( () => alert('There was an error when loading the posts, please refresh the page') );
@@ -39,7 +39,7 @@ export default function UserPage () {
 
                     <div>
                         <PostsListContainer>
-                            {userPosts.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}
+                            {userPosts.map( eachPost => <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> )}
                         </PostsListContainer>
                         
                         <Trending />

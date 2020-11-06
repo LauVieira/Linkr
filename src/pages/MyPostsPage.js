@@ -6,13 +6,15 @@ import Trending from '../components/Trending';
 import UserContext from '../contexts/UserContext';
 import { Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
 
+import Modal from '../components/Modal';
+
 export default function MyPostsPage () {
     const { header, userData } = useContext(UserContext);
     const [ myPosts, setMyPosts ] = useState([]);
    
-    useEffect(getUserPosts,[]);
+    useEffect(getPostsList,[]);
 
-    function getUserPosts () {
+    function getPostsList () {
         const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/${userData.user.id}/posts?offset=0&limit=10`,header);
         request.then( response => { setMyPosts([...response.data.posts]) });
         request.catch( () => alert('There was an error when loading the posts, please refresh the page') );
@@ -31,7 +33,7 @@ export default function MyPostsPage () {
 
                     <div>
                         <PostsListContainer>
-                            {myPosts.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}
+                            {myPosts.map( eachPost => <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> )}
                         </PostsListContainer>
                         
                         <Trending />

@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useContext, useState, useEffect, useRef} from 'react';
 import { Link,useHistory } from 'react-router-dom';
 import ReactHashtag from 'react-hashtag';
 import styled from 'styled-components';
 import { media } from './SmallerComponents';
 import LikeButton from './LikeButton';
+import { BsTrash } from 'react-icons/bs';
+import { BsPencil } from 'react-icons/bs';
+import UserContext from '../contexts/UserContext';
+
+
+import Modal from '../components/Modal';
+import axios from 'axios';
+
 
 export default function LayOutPosts (props) {
     const { likes, user, text, linkTitle, linkImage, linkDescription, link } = props.post;
@@ -14,6 +22,59 @@ export default function LayOutPosts (props) {
     function openHashtag (hashtag) {                 //perguntar por clean code: melhor numa função ou em uma linha só no onClick?   :
         const hashtagName = hashtag.slice(1);
         history.push(`/hashtag/${hashtagName}`);           // onHashtagClick={ hashtag => history.push(`/hashtag/${hashtag.slice(1)}`) }  ????
+    }
+
+    const { header, userData } = useContext(UserContext);
+    const {post} = props;
+    const textEditRef = useRef();
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [editingPost, setEditingPost] = useState(false);
+    const [description, setDescription] = useState(post.text);
+    const [onSendingPostEdition, setOnSendingPostEdition] = useState(false);
+
+    function errorHandle(error) {
+        console.error(error);
+        setIsLoading(false);
+        setModalIsOpen(!modalIsOpen);
+        alert("Não foi possível excluir o post")
+    }
+    function Delete() {
+        setIsLoading(true);
+        axios.delete(
+            `https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts/${post.id}`,
+            header
+        //).then(() => userPostSucceeded()).catch(errorHandle)
+        //depois de excluir atualizar a lista, que ai viria sem o post excluido ou tirar ele do arrey de posts!!!
+        ).then().catch(errorHandle)
+        setIsLoading(false);
+        setModalIsOpen(!modalIsOpen);
+        props.getPostsList();
+    }
+
+    useEffect( () => {
+        if (textEditRef.current)
+          textEditRef.current.focus();
+        }, [editingPost]
+    );
+
+    function sendEditedPostToServer() {
+        setOnSendingPostEdition(true);
+
+        const request = axios.put(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts/${post.id}`, {'text': description}, header);
+
+        request.then( ({data}) => {
+            setOnSendingPostEdition(false);  //input
+            setEditingPost(false);  //edição
+            props.getPostsList();//refresh 
+        });
+        request.catch( () => {
+            setOnSendingPostEdition(false);
+            setEditingPost(false);
+            alert('A alteração não foi possível de ser concluída!');
+            setPostMainDescription(post.text);
+            (error => console.log(error.response))
+        });
     }
 
     return (
@@ -28,11 +89,44 @@ export default function LayOutPosts (props) {
             </div>
 
             <div className='post-right'>
-
-                <h2><Link to={linkToUser}>
+                <div className='lixo'>
+                    <h2><Link to={linkToUser}>
                     {username}
-                </Link></h2>
-                
+                    </Link></h2>
+                    <div className='icones'>
+                    {userData.user.username === props.post.user.username && <BsTrash onClick={() => setModalIsOpen(!modalIsOpen)}/>} 
+                    {userData.user.username === props.post.user.username && <BsPencil onClick={() => {
+                                setEditingPost(!editingPost)
+                                setDescription(post.text)}}/>}
+                    </div>
+                    < Modal 
+                        modalIsOpen = { modalIsOpen }
+                        setModalIsOpen = { setModalIsOpen }
+                        Delete={Delete}
+                        isLoading = { isLoading }
+                    />
+                </div>
+                {editingPost ? 
+                    <input 
+                        ref = {textEditRef}
+                        disabled = {onSendingPostEdition}
+                        value = {description}
+                        onChange ={e => setDescription(e.target.value)}
+                        onKeyDown = { (event) => {
+                            if(event.key === 'Escape') {
+                                setOnEditingPost(false);
+                                setDescription(post.text);
+                            }                               
+                            else if (event.key === 'Enter') 
+                                sendEditedPostToServer();
+                        }}
+                    /> :
+                    <div className='description'>
+                        <ReactHashtag onHashtagClick = {value => history.push(`/hashtag/${value.substr(1)}`)} >
+                            {post.text}
+                        </ReactHashtag> 
+                    </div>  
+                }
                 <p><ReactHashtag onHashtagClick={hashtag => openHashtag(hashtag)}>
                     {text}
                 </ReactHashtag></p>
@@ -90,6 +184,7 @@ const PostContainer = styled.article`
         & > h2 {
             font-size: 18px;
             color: #FFF;
+            
         }
 
         & > p {
@@ -101,6 +196,23 @@ const PostContainer = styled.article`
                 font-weight: 700;
             }
         }
+        
+        .lixo{
+            display:flex;
+            justify-content: space-between;
+        }
+
+        icone{
+            display: flex;
+            justify-content: center;
+        }
+
+        svg{
+            size: 18px; 
+            margin-right: 10px;
+            color: white;
+        }
+        
     }
 
     ${media} {
@@ -197,6 +309,10 @@ user:
     avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/57/avatar"
     id: 57
     username: "Silmar"
+    const {post, setPostDeleted} = props;
+    {userData.user.username === props.post.user.username && <BsTrash size='15px' color='white' onClick={() => alert('teste')} />} 
+liiiiiiiiiiiiiiiiiiiiiiiiiiiiiiimiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiitttttttttttttttttttttttttttttttttttttteeeeeeeeeeeeeeeeeeeeeeeeeeee
+     const [openModal, setOpenModal] = useState(false);
 
 */
 

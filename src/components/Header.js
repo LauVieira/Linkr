@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { media } from '../components/SmallerComponents';
 import UserContext from '../contexts/UserContext'
 
+
 export default function Header () {
     const [ OpenMenu, SetOpenMenu ] = useState(false);
     const { userData, setUserData } = useContext(UserContext);
