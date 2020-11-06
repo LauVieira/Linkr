@@ -13,7 +13,7 @@ export default function UserPage () {
     const { header } = useContext(UserContext);
     let history = useHistory();
 
-    useEffect(getIdsPosts,[hashtagName]);         //Pq q eu usei Ids posts e não hashtag posts? kkkkk
+    useEffect(getPostsList,[hashtagName]);         //Pq q eu usei Ids posts e não hashtag posts? kkkkk
 
     function sendHashtagPosts (response) {
         const postsList = response.data.posts;
@@ -27,7 +27,7 @@ export default function UserPage () {
         }
     }
 
-    function getIdsPosts () {
+    function getPostsList () {
         const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/hashtags/${hashtagName}/posts?offset=0&limit=10`,header);
         request.then( response => { sendHashtagPosts(response) });
         request.catch( () => alert('There was an error when loading the posts, please refresh the page'));
@@ -46,7 +46,7 @@ export default function UserPage () {
                     
                     <div>
                         <PostsListContainer>
-                            {hashtagPosts.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}
+                            {hashtagPosts.map( eachPost => <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> )}
                         </PostsListContainer>
                         
                         <Trending />

@@ -26,14 +26,12 @@ export default function LikeButton (props) {
     }
 
     function likeDislike () {
-        console.log('hello');
         checkIfLiked();
         userLiked ? postLikeDislike('dislike') : postLikeDislike('like');
     }
 
     function postLikeDislike (aim) {
         const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts/${postId}/${aim}`,{},header);
-        request.then( response => console.log(response));
     }
 
     return (

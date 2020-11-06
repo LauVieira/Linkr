@@ -6,7 +6,10 @@ export const media = '@media (max-width: 800px)';
 export function Loading () {
 
     return (
-        <LoadingWrapper><img src='/images/loading.gif' /><p>Loading, please wait :)</p></LoadingWrapper>
+        <LoadingWrapper>
+            <img src='/images/loading.gif' />
+            <p>Loading, please wait :)</p>
+        </LoadingWrapper>
     );
 }
 

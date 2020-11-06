@@ -45,7 +45,7 @@ export default function TimelinePage () {
                         <PostsListContainer>
                             <UserInput getPostsList={getPostsList}/>
 
-                            {postsList.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}
+                            {postsList.map( eachPost => <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> )}
                         </PostsListContainer>
                         
                         <Trending />

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import { IoIosArrowDown } from 'react-icons/io';
@@ -8,51 +8,46 @@ import { MdSearch } from 'react-icons/md';
 import { media } from '../components/SmallerComponents';
 import UserContext from '../contexts/UserContext';
 
-// agataivanoff@yahoo.com.br
-// mudar props de css do Menu
-// tratar pra quando o usuário clica no perfil que já está sendo exibido
-// apagar pesquisa antes de mudar de página
-/*
-<DebounceInput
-    minLength={2}
-    debounceTimeout={300}
-onChange={event => this.setState({value: event.target.value})} />
-*/
-
 export default function Header () {
-    const [ OpenMenu, SetOpenMenu ] = useState(false);
+    const [ openMenu, SetOpenMenu ] = useState(false);
     const { header, userData, setUserData } = useContext(UserContext);
     const [ accountSearch, setAccountSearch ] = useState('');
     const [ searchResults, setSearchResults ] = useState([]);
+    let history = useHistory();
 
     function releaseMenu (event) {
-        if (!OpenMenu) event.preventDefault();
+        if (!openMenu) event.preventDefault();
     }
 
     function releaseMenuLogOut (event) {
-        OpenMenu ? setUserData({...{}}) : event.preventDefault();
+        openMenu ? setUserData({...{}}) : event.preventDefault();
     }
 
-    function prepareSearch (nameSearched) {    //é aqui o xabú, tá sempre um passo atrás
+    function prepareSearch (nameSearched) {
+        nameSearched.length > 2 ? startSearch(nameSearched) : setSearchResults([]);    // <<<<<<-------   mostrar pra Luanna
         setAccountSearch(nameSearched);
-        accountSearch.length > 2 ? startSearch() : setSearchResults([]);   //mudar esse length
     }
 
-    function startSearch () {
-        const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/search?username=${accountSearch}`,header);
+    function startSearch (nameSearched) {
+        const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/search?username=${nameSearched}`,header);
         request.then( response => {sortingSearch(response.data.users)} );
         request.catch( () => alert('There was an error when loading the posts, please refresh the page') );
     }
 
     function sortingSearch (originalList) {
         const sortedList = [];
-        originalList.forEach (element => { 
+        originalList.forEach(element => { 
             element.isFollowingLoggedUser ? sortedList.unshift(element) : sortedList.push(element);
         });
         setSearchResults(sortedList);
     }
 
-    return (                //mudar props do searchField no futuro, pelo tamanho da lista de retorno da busca || mudar props do AccountFound
+    function closingSearch (idLink) {
+        setSearchResults([]);
+        history.push(`/user/${idLink}`);
+    }
+
+    return (
         <StyledHeader>
 
             <Linkr>
@@ -71,18 +66,16 @@ export default function Header () {
                 </form>
                 { searchResults.length > 0 &&
                     <ul>
-                        {searchResults.map( accountFound =>  <ListAccountsFound accountFound={accountFound} key={accountFound.id}/>)}
+                        {searchResults.map( accountFound =>  
+                            <ListAccountsFound accountFound={accountFound} closingSearch={closingSearch} key={accountFound.id} />
+                        )}
                     </ul>
                 }
             </SearchField>
 
             <div>
-                <Menu
-                 translate={OpenMenu? 'translateY(0)':'translateY(-40px)'}
-                 opacity={OpenMenu? '1' : '0'}
-                 rotate={OpenMenu? 'rotate(180deg)':'rotate(0)'}
-                >
-                    <div onClick={() => SetOpenMenu(!OpenMenu)}><IoIosArrowDown  /></div>
+                <Menu openMenu={openMenu} >
+                    <div onClick={() => SetOpenMenu(!openMenu)}><IoIosArrowDown  /></div>
                     <img src={userData.user.avatar}/>
 
                     <nav>
@@ -99,30 +92,15 @@ export default function Header () {
 
 function ListAccountsFound (props) {
     const {id, username, avatar, isFollowingLoggedUser} = props.accountFound;
-    const linkToUser = `/user/${id}`;
 
     return (
-        <Link to={linkToUser}>
-            <li>
-                <img src={avatar}/>
-                <p>{username}</p>
-                {isFollowingLoggedUser && <span>following</span>}
-            </li>
-        </Link>
+        <li onClick={ () => props.closingSearch(id)}>
+            <img src={avatar}/>
+            <p>{username}</p>
+            {isFollowingLoggedUser && <span>following</span>}
+        </li>
     );
 }
-
-
-/*
-response.data.users
-
-(3) [{…}, {…}, {…}]
-0: {id: 46, username: "aninha", avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/46/avatar", isFollowingLoggedUser: true}
-1: {id: 90, username: "androlinhas", avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/90/avatar", isFollowingLoggedUser: false}
-2: {id: 100, username: "anelisepop", avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/100/avatar", isFollowingLoggedUser: false}
-length: 3
-*/   
-
 
 const StyledHeader = styled.div `
     background-color: #151515;
@@ -211,7 +189,6 @@ const SearchField = styled.div`
     
 `;
 
-
 const Menu = styled.div`
     align-items: center;
     color: #FFF;
@@ -222,7 +199,7 @@ const Menu = styled.div`
         cursor: pointer;
         font-size: 40px;
         margin-right: 10px;
-        transform: ${props => props.rotate};
+        transform: ${props => props.openMenu ? 'rotate(180deg)' : 'rotate(0)'};
         z-index: 2;
     }
 
@@ -239,14 +216,14 @@ const Menu = styled.div`
         display:flex;
         flex-direction:column;
         font: 700 20px 'Lato', sans-serif;
-        opacity: ${props => props.opacity};
+        opacity: ${props => props.openMenu ? '1' : '0'};
         padding: 20px;
         position: fixed;
         right: 0px;
         text-align: center;
         top: 50px;
         transition: 400ms ease;
-        transform: ${props => props.translate};
+        transform: ${props => props.openMenu ? 'translateY(0)' : 'translateY(-40px)'};
         width: 170px;
         z-index: 1;
     }

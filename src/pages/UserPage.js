@@ -10,6 +10,8 @@ import FollowingContext from '../contexts/FollowingContext';
 import { Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
 
 //agataivanoff@yahoo.com.br
+//getPostsList MUDAR NOME DAS FUNÇÕES
+// Refatorar para começar com o single data e depois ver se tem post pra exibir
 
 export default function UserPage () {
     let userId = useParams().id;          // Posso mudar pra const?
@@ -22,13 +24,13 @@ export default function UserPage () {
     const [ requestProcessing, setRequestProcessing ] = useState(false);
     const [ isLoading, setIsLoading ] = useState (true);
 
-    useEffect(getUserPosts,[userId]);
+    useEffect(getPostsList,[userId]);
     useEffect( 
         () => setFollowedAccount(checkIfFollowed(userId)),
     [userId]);
    
 
-    function getUserPosts () {
+    function getPostsList () {
         const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/${userId}/posts?offset=0&limit=10`,header);
         request.then( response => {userPostsSucceeded(response)} );
         request.catch( () => alert('There was an error when loading the posts, please refresh the page') );
@@ -38,9 +40,10 @@ export default function UserPage () {
         if (response.data.posts.length) {
             setUserPosts([...response.data.posts]);
             setTitle(`${response.data.posts[0].user.username}'s posts`);
-            setIsLoading (false);
+            setIsLoading(false);
         }
         else {
+            setUserPosts([]);           //mudar se der tempo
             getSingleUser();
         }
     }
@@ -52,7 +55,7 @@ export default function UserPage () {
 
     function singleDataSucceeded (response) {
         setTitle(`${response.data.user.username}'s posts`);
-        userId = response.data.user.id;
+        userId = response.data.user.id;          //
         setIsLoading (false);
     }
 
@@ -101,8 +104,9 @@ export default function UserPage () {
                     <div>
                         { userPosts.length > 0
                             ? <PostsListContainer>
-                                {userPosts.map( eachPost => <LayOutPosts post={eachPost} key={eachPost.id} /> )}
+                                {userPosts.map( eachPost => <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> )}
                               </PostsListContainer>
+                              
                             : <NoPost>
                                 <img src='/images/noPosts.jpg' />
                                 <p>This user has no posts to be displayed</p>
