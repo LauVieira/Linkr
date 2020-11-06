@@ -10,11 +10,10 @@ import FollowingContext from '../contexts/FollowingContext';
 import { Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
 
 //agataivanoff@yahoo.com.br
-//getPostsList MUDAR NOME DAS FUNÇÕES
 // Refatorar para começar com o single data e depois ver se tem post pra exibir
 
 export default function UserPage () {
-    let userId = useParams().id;          // Posso mudar pra const?
+    const userId = useParams().id;          // Posso mudar pra const?
     const { userData, header } = useContext(UserContext);
     const myUserId = userData.user.id;
     const { updateFollowingList, checkIfFollowed } = useContext(FollowingContext);
@@ -55,7 +54,6 @@ export default function UserPage () {
 
     function singleDataSucceeded (response) {
         setTitle(`${response.data.user.username}'s posts`);
-        userId = response.data.user.id;          //
         setIsLoading (false);
     }
 
@@ -72,7 +70,7 @@ export default function UserPage () {
     function followUnfollowSucceeded () {
         setRequestProcessing(false);
         updateFollowingList();
-        setFollowedAccount(!followedAccount);     // Não é a melhor opção, mas como lidar com a assincronicidade?
+        setFollowedAccount(!followedAccount);     // Não é a melhor opção, mas como lidar com a assincronicidade/delay? Recarregar página?
     }
 
     function followUnfollowFailed () {

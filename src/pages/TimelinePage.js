@@ -17,22 +17,22 @@ export default function TimelinePage () {
     const [ postsList, setPostsLists ] = useState([]);
     const [ isLoading, setIsLoading ] = useState(true);
 
-    useEffect(updateFollowingList,[]);             //Aqui é o melhor lugar pra chamar essa função pela primeira vez?
-    useEffect(getPostsList,[]);
+    useEffect(updateFollowingList, []);
+    useEffect(getPostsList, []);
+    useEffect( () => {
+        const reload = setInterval(getPostsList,15000);
+        return () => clearInterval(reload);
+    }, []);
     
     function getPostsList () {
-        //const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts?offset=0&limit=15',header);
         const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/following/posts',header);
         request.then( response => {postsListSucceeded(response)} );
         request.catch( () => alert('There was an error when loading the posts, please refresh the page') );
-        //const request2 = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/following/posts',header);
-        //request2.then( response => {console.log(response)} );
-        //request2.catch( response => {console.log(response)} );
     }
 
     function postsListSucceeded (response) {
         setIsLoading(false);
-        setPostsLists([...response.data.posts])
+        setPostsLists([...response.data.posts])          // fazer setPostsLists([...postList,...response.data.posts])   ??? ou na ordem contrária?
     }  
 
     return (
