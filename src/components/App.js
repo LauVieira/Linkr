@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import HashtagPage from '../pages/HashtagPage';
 import LoginPage from '../pages/LoginPage';
+import MyLikesPage from '../pages/MyLikesPage';
 import MyPostsPage from '../pages/MyPostsPage';
 import TimelinePage from '../pages/TimelinePage';
 import UserPage from '../pages/UserPage';
@@ -21,6 +22,7 @@ export default function App () {
                     <FollowingContextProvider>
                         <Route path='/' exact component={LoginPage} />
                         <Route path='/timeline' exact component={TimelinePage} />
+                        <Route path='/my-likes' exact component={MyLikesPage} />
                         <Route path='/my-posts' exact component={MyPostsPage} />
                         <Route path='/user/:id' exact component={UserPage} />
                         <Route path='/hashtag/:hashtag' exact component={HashtagPage} />

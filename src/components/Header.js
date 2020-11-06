@@ -20,7 +20,7 @@ export default function Header () {
     }
 
     function releaseMenuLogOut (event) {
-        openMenu ? setUserData({...{}}) : event.preventDefault();
+        openMenu ? setUserData({...{}}) : event.preventDefault();        //Precisa mesmo desse openMenu??
     }
 
     function prepareSearch (nameSearched) {
@@ -80,7 +80,7 @@ export default function Header () {
 
                     <nav>
                         <Link to='/my-posts' onClick={(event) => releaseMenu(event)}>My posts</Link>
-                        <Link to='/my-posts' onClick={(event) => releaseMenu(event)}>My likes</Link>
+                        <Link to='/my-likes' onClick={(event) => releaseMenu(event)}>My likes</Link>
                         <Link to='/' onClick={(event) => releaseMenuLogOut(event)}>Logout</Link>
                     </nav>
                 </Menu>

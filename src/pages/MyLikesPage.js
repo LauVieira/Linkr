@@ -5,21 +5,19 @@ import LayOutPosts from '../components/LayOutPosts';
 import Trending from '../components/Trending';
 import UserContext from '../contexts/UserContext';
 import { Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
-import UserInput from '../components/UserInput';
 
-//checar identação do PostsListContainer
-
-export default function MyPostsPage () {
-    const { header, userData } = useContext(UserContext);
-    const [ myPosts, setMyPosts ] = useState([]);
+export default function MyLikesPage () {
+    const { header } = useContext(UserContext);
+    const [ myLikes, setMyLikes ] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
    
     useEffect(getPostsList,[]);
 
     function getPostsList () {
-        const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/${userData.user.id}/posts?offset=0&limit=10`,header);
+        const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts/liked',header);
         request.then( response => { 
-            setMyPosts([...response.data.posts])
+            setMyLikes([...response.data.posts])
+            console.log(response.data.posts);
             setIsLoading(false) 
         });
         request.catch( () => alert('There was an error when loading the posts, please refresh the page') );
@@ -34,15 +32,11 @@ export default function MyPostsPage () {
                 ? <Loading />
 
                 : <CurrentPage>
-                    <h1>my posts</h1>
+                    <h1>my likes</h1>
 
                     <div>
                         <PostsListContainer>
-                            <UserInput getPostsList={getPostsList}/>
-                            
-                            {myPosts.length > 0 && myPosts.map( 
-                                eachPost => <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> 
-                            )}
+                            {myLikes.length > 0 && myLikes.map( eachPost => <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> )}
                         </PostsListContainer>
                         
                         <Trending />
