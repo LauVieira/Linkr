@@ -21,11 +21,11 @@ export default function Header () {
     }
 
     function releaseMenuLogOut (event) {
-        openMenu ? setUserData({...{}}) : event.preventDefault();        //Precisa mesmo desse openMenu??
+        openMenu ? setUserData({...{}}) : event.preventDefault();
     }
 
     function prepareSearch (nameSearched) {
-        nameSearched.length > 2 ? startSearch(nameSearched) : setSearchResults([]);    // <<<<<<-------   mostrar pra Luanna
+        nameSearched.length > 2 ? startSearch(nameSearched) : setSearchResults([]);
         setAccountSearch(nameSearched);
     }
 

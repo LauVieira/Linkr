@@ -17,21 +17,19 @@ export default function LayOutPosts (props) {
     const { likes, user, text, linkTitle, linkImage, linkDescription, link } = props.post;
     const { id, username, avatar } = user;
     const linkToUser = `/user/${id}`;
-    let history = useHistory();
-
-    function openHashtag (hashtag) {                 //perguntar por clean code: melhor numa função ou em uma linha só no onClick?   :
-        const hashtagName = hashtag.slice(1);
-        history.push(`/hashtag/${hashtagName}`);           // onHashtagClick={ hashtag => history.push(`/hashtag/${hashtag.slice(1)}`) }  ????
-    }
-
     const { header, userData } = useContext(UserContext);
-    const {post} = props;
     const textEditRef = useRef();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [editingPost, setEditingPost] = useState(false);
-    const [description, setDescription] = useState(post.text);
+    const [description, setDescription] = useState(text);
     const [onSendingPostEdition, setOnSendingPostEdition] = useState(false);
+    let history = useHistory();
+
+    function openHashtag (hashtag) {
+        const hashtagName = hashtag.slice(1);
+        history.push(`/hashtag/${hashtagName}`);           // onHashtagClick={ hashtag => history.push(`/hashtag/${hashtag.slice(1)}`) }  ????
+    }
 
     function errorHandle(error) {
         console.error(error);
@@ -42,7 +40,7 @@ export default function LayOutPosts (props) {
     function Delete() {
         setIsLoading(true);
         axios.delete(
-            `https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts/${post.id}`,
+            `https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts/${props.post.id}`,
             header
         //).then(() => userPostSucceeded()).catch(errorHandle)
         //depois de excluir atualizar a lista, que ai viria sem o post excluido ou tirar ele do arrey de posts!!!
@@ -61,7 +59,7 @@ export default function LayOutPosts (props) {
     function sendEditedPostToServer() {
         setOnSendingPostEdition(true);
 
-        const request = axios.put(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts/${post.id}`, {'text': description}, header);
+        const request = axios.put(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts/${props.post.id}`, {'text': description}, header);
 
         request.then( ({data}) => {
             setOnSendingPostEdition(false);  //input
@@ -72,7 +70,7 @@ export default function LayOutPosts (props) {
             setOnSendingPostEdition(false);
             setEditingPost(false);
             alert('A alteração não foi possível de ser concluída!');
-            setPostMainDescription(post.text);
+            setPostMainDescription(text);
             (error => console.log(error.response))
         });
     }
@@ -94,10 +92,10 @@ export default function LayOutPosts (props) {
                     {username}
                     </Link></h2>
                     <div className='icones'>
-                    {userData.user.username === props.post.user.username && <BsTrash onClick={() => setModalIsOpen(!modalIsOpen)}/>} 
-                    {userData.user.username === props.post.user.username && <BsPencil onClick={() => {
+                    {userData.user.username === username && <BsTrash onClick={() => setModalIsOpen(!modalIsOpen)}/>} 
+                    {userData.user.username === username && <BsPencil onClick={() => {
                                 setEditingPost(!editingPost)
-                                setDescription(post.text)}}/>}
+                                setDescription(text)}}/>}
                     </div>
                     < Modal 
                         modalIsOpen = { modalIsOpen }
@@ -115,7 +113,7 @@ export default function LayOutPosts (props) {
                         onKeyDown = { (event) => {
                             if(event.key === 'Escape') {
                                 setOnEditingPost(false);
-                                setDescription(post.text);
+                                setDescription(text);
                             }                               
                             else if (event.key === 'Enter') 
                                 sendEditedPostToServer();
@@ -123,7 +121,7 @@ export default function LayOutPosts (props) {
                     /> :
                     <div className='description'>
                         <ReactHashtag onHashtagClick = {value => history.push(`/hashtag/${value.substr(1)}`)} >
-                            {post.text}
+                            {text}
                         </ReactHashtag> 
                     </div>  
                 }
