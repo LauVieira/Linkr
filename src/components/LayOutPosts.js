@@ -118,7 +118,6 @@ export default function LayOutPosts (props) {
                         setModalIsOpen = { setModalIsOpen }
                         Delete={Delete}
                         isLoading = { isLoading }
-                        className = 'modal-media'
                     />
 
                 </div>
@@ -232,13 +231,6 @@ const PostContainer = styled.article`
             img {
                 height: 40px;
                 width: 40px;
-            }
-        }
-
-        .post-right {
-            .modal-media {
-                width: 100vw;
-                margin: 0;
             }
         }
     }

@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactModal from 'react-modal';
 import styled from 'styled-components';
-import { media } from '../components/SmallerComponents';
 
 ReactModal.setAppElement("body");
 
@@ -16,6 +15,7 @@ const customStyles = {
     background: "#333333",
     borderRadius: "20px",
     margin: "20px 50px",
+    margin: "0 auto",
     padding: "20px 50px",
   },
 };
@@ -26,7 +26,7 @@ export default function Modal({
   Delete,
   isLoading,
 }) {
-  
+
   return (
     <ReactModal
       isOpen={modalIsOpen}
