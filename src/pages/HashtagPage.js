@@ -13,7 +13,7 @@ export default function UserPage () {
     const { header } = useContext(UserContext);
     let history = useHistory();
 
-    useEffect(getPostsList,[hashtagName]);         //Pq q eu usei Ids posts e não hashtag posts? kkkkk
+    useEffect(getPostsList,[hashtagName]);
 
     function sendHashtagPosts (response) {
         const postsList = response.data.posts;

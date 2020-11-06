@@ -13,6 +13,7 @@ import UserPage from '../pages/UserPage';
 import { UserContextProvider } from '../contexts/UserContext';
 import { FollowingContextProvider } from '../contexts/FollowingContext';
 
+
 export default function App () {
     
     return (    

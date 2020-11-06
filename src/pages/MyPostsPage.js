@@ -9,6 +9,8 @@ import UserInput from '../components/UserInput';
 
 //checar identação do PostsListContainer
 
+import Modal from '../components/Modal';
+
 export default function MyPostsPage () {
     const { header, userData } = useContext(UserContext);
     const [ myPosts, setMyPosts ] = useState([]);

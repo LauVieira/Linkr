@@ -8,6 +8,7 @@ import { MdSearch } from 'react-icons/md';
 import { media } from '../components/SmallerComponents';
 import UserContext from '../contexts/UserContext';
 
+
 export default function Header () {
     const [ openMenu, SetOpenMenu ] = useState(false);
     const { header, userData, setUserData } = useContext(UserContext);
