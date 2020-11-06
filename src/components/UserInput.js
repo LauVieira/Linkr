@@ -23,7 +23,9 @@ export default function UserInput (props) {
     }
 
     function formatObj () {
-        const postObj = userComment.length? ({link: userLink, text: userComment}) : ({link: userLink});
+        const postObj = userComment.length
+            ? {link: userLink, text: userComment}
+            : {link: userLink};
         return postObj;
     }
 
@@ -45,7 +47,7 @@ export default function UserInput (props) {
     }
 
     return (
-        <UserInputContainer>
+        <UserInputContainer clicked={clicked}>
             <img src={userData.user.avatar} />
 
             <form onSubmit={(event) => submitComment(event)}>
@@ -101,7 +103,7 @@ const UserInputContainer = styled.div`
         width: 100%;
 
         button {
-            background: #1877F2;
+            background: ${ props => props.clicked ? '#CCC' : '#1877F2'};
             border-radius: 5px;
             color: #FFF;
             font-weight: 700;

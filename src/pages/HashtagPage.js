@@ -46,7 +46,9 @@ export default function UserPage () {
                     
                     <div>
                         <PostsListContainer>
-                            {hashtagPosts.map( eachPost => <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> )}
+                            {hashtagPosts.map( eachPost => 
+                                <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> 
+                            )}
                         </PostsListContainer>
                         
                         <Trending />

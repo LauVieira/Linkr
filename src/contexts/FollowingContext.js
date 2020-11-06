@@ -30,17 +30,3 @@ export function FollowingContextProvider (props) {
         </FollowingContext.Provider>
     );
 }
-
-//agataivanoff@yahoo.com.br
-
-
-/*
-0:
-    avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/42/avatar"
-    id: 42
-    username: "sammy"
-    __proto__: Object
-1: {id: 93, username: "aaaa", avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/93/avatar"}
-2: {id: 35, username: "klaussvp", avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/35/avatar"}
-3: {id: 82, username: "monalice", avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/82/avatar"}
-*/

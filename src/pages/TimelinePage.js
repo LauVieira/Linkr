@@ -9,8 +9,6 @@ import UserContext from '../contexts/UserContext';
 import FollowingContext from '../contexts/FollowingContext';
 import { media, Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
 
-//agataivanoff@yahoo.com.br
-
 export default function TimelinePage () {
     const { userData, header } = useContext(UserContext);
     const { followingList, updateFollowingList } = useContext(FollowingContext);
@@ -32,7 +30,7 @@ export default function TimelinePage () {
 
     function postsListSucceeded (response) {
         setIsLoading(false);
-        setPostsLists([...response.data.posts])          // fazer setPostsLists([...postList,...response.data.posts])   ??? ou na ordem contrária?
+        setPostsLists([...response.data.posts]);
     }  
 
     return (
@@ -52,20 +50,18 @@ export default function TimelinePage () {
 
                             <UserInput getPostsList={getPostsList}/>
 
-                            { followingList.length === 0
+                            { postsList.length > 0 && postsList.map( eachPost => 
+                                <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> 
+                            )}
+
+                            { postsList.length === 0
+                                && followingList.length === 0
                                 && <Message>You currently don't follow anybody, but you can find cool people to follow using our search :)</Message> 
                             }
 
-                            { followingList.length !== 0
-                                && postsList.length === 0
+                            { postsList.length === 0
+                                && followingList.length !== 0
                                 && <Message>Nobody has posted yed. Why don't you try some interesting topic of our trending session? :)</Message>
-                            }
-
-                            { followingList.length !== 0
-                                && postsList.length > 0
-                                && postsList.map( eachPost => 
-                                    <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> 
-                                )
                             }
 
                         </PostsListContainer>
@@ -78,7 +74,6 @@ export default function TimelinePage () {
         </>
     );
 }
-
 
 const Message = styled.div`
     color: #FFF;

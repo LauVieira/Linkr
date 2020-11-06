@@ -16,9 +16,8 @@ export default function MyLikesPage () {
     function getPostsList () {
         const request = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts/liked',header);
         request.then( response => { 
-            setMyLikes([...response.data.posts])
-            console.log(response.data.posts);
-            setIsLoading(false) 
+            setMyLikes([...response.data.posts]);
+            setIsLoading(false);
         });
         request.catch( () => alert('There was an error when loading the posts, please refresh the page') );
     }
@@ -36,7 +35,9 @@ export default function MyLikesPage () {
 
                     <div>
                         <PostsListContainer>
-                            {myLikes.length > 0 && myLikes.map( eachPost => <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> )}
+                            {myLikes.length > 0 && myLikes.map( eachPost => 
+                                <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> 
+                            )}
                         </PostsListContainer>
                         
                         <Trending />

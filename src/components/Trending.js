@@ -37,11 +37,19 @@ export default function Trending () {
             </div>
 
             <form onSubmit={(event) => searchHashtag(event)}>
-                <input type='text' placeholder='search hashtag' onChange={(e) => setHashtagSearched(e.target.value)} value={hashtagSearched}/>
+                <input type='text' 
+                    placeholder='search hashtag' 
+                    onChange={(e) => setHashtagSearched(e.target.value)} 
+                    value={hashtagSearched}
+                />
             </form>
 
             <div className='hashtag'>   
-                {hashtags.map( hashtag => <Link to = {`/hashtag/${hashtag.name}`} key ={hashtag.id} ><p>{`# ${hashtag.name}`}</p></Link> )}
+                {hashtags.map( hashtag => 
+                    <Link to = {`/hashtag/${hashtag.name}`} key ={hashtag.id} >
+                        <p>{`# ${hashtag.name}`}</p>
+                    </Link>
+                )}
             </div>
         
         </ContainerTrending>
@@ -54,6 +62,7 @@ const ContainerTrending = styled.div `
     border-radius: 15px;
     color: #FFF;
     flex-direction: column;
+    overflow: hidden;
     width: 250px;
     
     .title {

@@ -77,7 +77,9 @@ export default function Header () {
 
             <div>
                 <Menu openMenu={openMenu} >
-                    <div onClick={() => SetOpenMenu(!openMenu)}><IoIosArrowDown  /></div>
+                    <div onClick={() => SetOpenMenu(!openMenu)}>
+                        <IoIosArrowDown  />
+                    </div>
                     <img src={userData.user.avatar}/>
 
                     <nav>

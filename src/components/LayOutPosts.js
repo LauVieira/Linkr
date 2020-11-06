@@ -7,11 +7,8 @@ import LikeButton from './LikeButton';
 import { BsTrash } from 'react-icons/bs';
 import { BsPencil } from 'react-icons/bs';
 import UserContext from '../contexts/UserContext';
-
-
 import Modal from '../components/Modal';
 import axios from 'axios';
-
 
 export default function LayOutPosts (props) {
     const { likes, user, text, linkTitle, linkImage, linkDescription, link } = props.post;
@@ -19,60 +16,67 @@ export default function LayOutPosts (props) {
     const linkToUser = `/user/${id}`;
     const { header, userData } = useContext(UserContext);
     const textEditRef = useRef();
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [editingPost, setEditingPost] = useState(false);
-    const [description, setDescription] = useState(text);
-    const [onSendingPostEdition, setOnSendingPostEdition] = useState(false);
+    const [ modalIsOpen, setModalIsOpen ] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(false);
+    const [ editingPost, setEditingPost ] = useState(false);
+    const [ description, setDescription ] = useState(text);
+    const [ onSendingPostEdition, setOnSendingPostEdition ] = useState(false);
     let history = useHistory();
+
+    useEffect( () => 
+        { if (textEditRef.current) textEditRef.current.focus() }, [editingPost]  
+    );
 
     function openHashtag (hashtag) {
         const hashtagName = hashtag.slice(1);
-        history.push(`/hashtag/${hashtagName}`);           // onHashtagClick={ hashtag => history.push(`/hashtag/${hashtag.slice(1)}`) }  ????
+        history.push(`/hashtag/${hashtagName}`);
     }
 
-    function errorHandle(error) {
-        console.error(error);
-        setIsLoading(false);
-        setModalIsOpen(!modalIsOpen);
-        alert("Não foi possível excluir o post")
-    }
-    function Delete() {
+    function Delete () {
         setIsLoading(true);
-        axios.delete(
-            `https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts/${props.post.id}`,
-            header
-        //).then(() => userPostSucceeded()).catch(errorHandle)
-        //depois de excluir atualizar a lista, que ai viria sem o post excluido ou tirar ele do arrey de posts!!!
-        ).then().catch(errorHandle)
+        const request = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts/${props.post.id}`,header);
+        request.then(deleteSucceeded).catch(errorHandle);
+    }
+
+    function deleteSucceeded () {
         setIsLoading(false);
         setModalIsOpen(!modalIsOpen);
         props.getPostsList();
     }
 
-    useEffect( () => {
-        if (textEditRef.current)
-          textEditRef.current.focus();
-        }, [editingPost]
-    );
+    function errorHandle (error) {
+        console.error(error);
+        setIsLoading(false);
+        setModalIsOpen(!modalIsOpen);
+        alert(`Sorry, we couln't delete your post`)
+    }
 
     function sendEditedPostToServer() {
         setOnSendingPostEdition(true);
-
         const request = axios.put(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts/${props.post.id}`, {'text': description}, header);
+        request.then(editSucceeded);
+        request.catch(editFailed);
+    }
 
-        request.then( ({data}) => {
-            setOnSendingPostEdition(false);  //input
-            setEditingPost(false);  //edição
-            props.getPostsList();//refresh 
-        });
-        request.catch( () => {
-            setOnSendingPostEdition(false);
-            setEditingPost(false);
-            alert('A alteração não foi possível de ser concluída!');
-            setPostMainDescription(text);
-            (error => console.log(error.response))
-        });
+    function editSucceeded () {
+        setOnSendingPostEdition(false);
+        setEditingPost(false);
+        props.getPostsList();
+    }
+
+    function editFailed () {
+        setOnSendingPostEdition(false);
+        setEditingPost(false);
+        alert(`Sorry, we couln't edit your post`);
+        setPostMainDescription(text);
+    }
+
+    function onKeyDownLogic (event) {
+        if(event.key === 'Escape') {
+            setOnEditingPost(false);
+            setDescription(text);
+        }                               
+        if (event.key === 'Enter') sendEditedPostToServer();
     }
 
     return (
@@ -83,51 +87,58 @@ export default function LayOutPosts (props) {
                     <img src={avatar} />
                 </Link>
 
-                <LikeButton likes={likes} user={user} postId={props.post.id}/>
+                <LikeButton likes={likes} user={user} getPostsList={props.getPostsList} postId={props.post.id}/>
             </div>
 
             <div className='post-right'>
-                <div className='lixo'>
-                    <h2><Link to={linkToUser}>
-                    {username}
-                    </Link></h2>
-                    <div className='icones'>
-                    {userData.user.username === username && <BsTrash onClick={() => setModalIsOpen(!modalIsOpen)}/>} 
-                    {userData.user.username === username && <BsPencil onClick={() => {
+
+                <div className='icones'>
+
+                    <h2>
+                        <Link to={linkToUser}>
+                            {username}
+                        </Link>
+                    </h2>
+
+                    <div>
+                        {userData.user.username === username && 
+                            <BsTrash onClick={() => setModalIsOpen(!modalIsOpen)}/>
+                        } 
+
+                        {userData.user.username === username && 
+                            <BsPencil onClick={() => {
                                 setEditingPost(!editingPost)
-                                setDescription(text)}}/>}
+                                setDescription(text)
+                            }}/>
+                        }
+
                     </div>
+
                     < Modal 
                         modalIsOpen = { modalIsOpen }
                         setModalIsOpen = { setModalIsOpen }
                         Delete={Delete}
                         isLoading = { isLoading }
                     />
+
                 </div>
-                {editingPost ? 
-                    <input 
-                        ref = {textEditRef}
+
+                {editingPost 
+                    ? <input ref = {textEditRef}
                         disabled = {onSendingPostEdition}
                         value = {description}
                         onChange ={e => setDescription(e.target.value)}
-                        onKeyDown = { (event) => {
-                            if(event.key === 'Escape') {
-                                setOnEditingPost(false);
-                                setDescription(text);
-                            }                               
-                            else if (event.key === 'Enter') 
-                                sendEditedPostToServer();
-                        }}
-                    /> :
-                    <div className='description'>
-                        <ReactHashtag onHashtagClick = {value => history.push(`/hashtag/${value.substr(1)}`)} >
-                            {text}
-                        </ReactHashtag> 
-                    </div>  
+                        onKeyDown = { event => onKeyDownLogic(event) }
+                        /> 
+                    
+                    :  <div className='description'>
+                            <p>
+                                <ReactHashtag onHashtagClick={hashtag => openHashtag(hashtag)}>
+                                    {text}
+                                </ReactHashtag>
+                            </p>
+                        </div> 
                 }
-                <p><ReactHashtag onHashtagClick={hashtag => openHashtag(hashtag)}>
-                    {text}
-                </ReactHashtag></p>
 
                 <LinkContainer>
                     <div>
@@ -178,6 +189,13 @@ const PostContainer = styled.article`
         height: 100%;
         justify-content: space-evenly;
         width: 100%;
+
+        .description {
+            span {
+                color: #FFF;
+                font-weight: 700;
+            }
+        }
         
         & > h2 {
             font-size: 18px;
@@ -188,29 +206,18 @@ const PostContainer = styled.article`
         & > p {
             font-size: 16px;
             margin: 10px 0;
-
-            span {
-                color: #FFF;
-                font-weight: 700;
-            }
         }
         
-        .lixo{
+        .icones {
             display:flex;
             justify-content: space-between;
-        }
-
-        icone{
-            display: flex;
-            justify-content: center;
         }
 
         svg{
             size: 18px; 
             margin-right: 10px;
             color: white;
-        }
-        
+        } 
     }
 
     ${media} {
@@ -279,38 +286,3 @@ const LinkContainer = styled.div`
         }
     }
 `;
-
-
-/*   props.post:
-
-id: 198
-likes: Array(3)
-    0:
-    createdAt: "2020-10-30T22:11:36.104Z"
-    id: 539
-    postId: 198
-    updatedAt: "2020-10-30T22:11:36.104Z"
-    user.id: 87
-    user.username: "plazzinga_"
-    userId: 87
-    __proto__: Object
-    1: {id: 550, userId: 49, postId: 198, createdAt: "2020-10-30T22:12:29.182Z", updatedAt: "2020-10-30T22:12:29.182Z", …}
-    2: {id: 573, userId: 59, postId: 198, createdAt: "2020-10-30T22:36:46.621Z", updatedAt: "2020-10-30T22:36:46.621Z", …}
-    length: 3
-    __proto__: Array(0)
-link: "https://app.slack.com/client/T018FQDU2KB/D0197E68P6E"
-linkDescription: ""
-linkImage: ""
-linkTitle: "Slack"
-text: "Confia no pai"
-user:
-    avatar: "https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/57/avatar"
-    id: 57
-    username: "Silmar"
-    const {post, setPostDeleted} = props;
-    {userData.user.username === props.post.user.username && <BsTrash size='15px' color='white' onClick={() => alert('teste')} />} 
-liiiiiiiiiiiiiiiiiiiiiiiiiiiiiiimiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiitttttttttttttttttttttttttttttttttttttteeeeeeeeeeeeeeeeeeeeeeeeeeee
-     const [openModal, setOpenModal] = useState(false);
-
-*/
-

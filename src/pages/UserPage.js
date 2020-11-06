@@ -10,7 +10,7 @@ import FollowingContext from '../contexts/FollowingContext';
 import { Loading, CurrentPage, PostsListContainer } from '../components/SmallerComponents';
 
 export default function UserPage () {
-    const userId = useParams().id;          // Posso mudar pra const?
+    const userId = useParams().id;
     const { userData, header } = useContext(UserContext);
     const myUserId = userData.user.id;
     const { updateFollowingList, checkIfFollowed } = useContext(FollowingContext);
@@ -20,10 +20,8 @@ export default function UserPage () {
     const [ requestProcessing, setRequestProcessing ] = useState(false);
     const [ isLoading, setIsLoading ] = useState (true);
 
-    useEffect(getSingleUser,[userId]);
-    useEffect( 
-        () => setFollowedAccount(checkIfFollowed(userId)),
-    [userId]);
+    useEffect(getSingleUser, [userId]);
+    useEffect( () => setFollowedAccount(checkIfFollowed(userId)), [userId]);
    
     function getSingleUser () {
         const request = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/users/${userId}`,header);
@@ -59,7 +57,7 @@ export default function UserPage () {
     function followUnfollowSucceeded () {
         setRequestProcessing(false);
         updateFollowingList();
-        setFollowedAccount(!followedAccount);     // Não é a melhor opção, mas como lidar com a assincronicidade/delay? Recarregar página?
+        setFollowedAccount(!followedAccount);
     }
 
     function followUnfollowFailed () {
@@ -79,19 +77,18 @@ export default function UserPage () {
 
                     <UserPageBasics followedAccount={followedAccount}>
                         <h1>{title}</h1>
-                        {userId !== myUserId && 
-                            (followedAccount
-                                ? <button disabled={requestProcessing} onClick={followUnfollow}>Unfollow</button> 
-                                : <button disabled={requestProcessing} onClick={followUnfollow}>Follow</button>
-                            )
-                        }
+                        {userId !== myUserId && (followedAccount
+                            ? <button disabled={requestProcessing} onClick={followUnfollow}>Unfollow</button> 
+                            : <button disabled={requestProcessing} onClick={followUnfollow}>Follow</button>
+                        )}
                     </UserPageBasics>
                     
-
                     <div>
                         { userPosts.length > 0
                             ? <PostsListContainer>
-                                {userPosts.map( eachPost => <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> )}
+                                {userPosts.map( eachPost => 
+                                    <LayOutPosts post={eachPost} getPostsList={getPostsList} key={eachPost.id} /> 
+                                )}
                               </PostsListContainer>
                               
                             : <NoPost>

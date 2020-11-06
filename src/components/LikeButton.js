@@ -1,11 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
-import { media } from '../components/SmallerComponents';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import UserContext from '../contexts/UserContext';
 import axios from 'axios';
-
-// Em que pé estamos do Like: dar like e dislike funciona, mas só ao atualizar a página e ainda não re renderiza. Coração também está mudando de cor/preenchimento, mas só quando atualiza também.
 
 export default function LikeButton (props) {
     const { userData, header } = useContext(UserContext);
@@ -16,8 +13,7 @@ export default function LikeButton (props) {
 
     useEffect(checkIfLiked,[]);
 
-    function checkIfLiked () {     // Podemos melhorar essa função?
-        setUserLiked(false);            // Mais prático definir como falso no começo e redefinir se for o caso, mas... Vai dar ruim aqui?
+    function checkIfLiked () {
         if (likes.length > 0) {
             likes.forEach( like => {
                 if (like.userId === myUser.id) setUserLiked(true);
@@ -32,10 +28,14 @@ export default function LikeButton (props) {
 
     function postLikeDislike (aim) {
         const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v1/linkr/posts/${postId}/${aim}`,{},header);
+        request.then( () => {
+            setUserLiked(!userLiked);
+            props.getPostsList();
+        });
     }
 
     return (
-        <LikeContainer color={userLiked ? '#AC0000' : '#FFF'}>  
+        <LikeContainer userLiked={userLiked}>  
             <button onClick={likeDislike}>
                 { userLiked ? <AiFillHeart /> : <AiOutlineHeart /> }
             </button>
@@ -48,7 +48,7 @@ const LikeContainer = styled.div `
     text-align: center;
 
     button {
-        color: ${props => props.color};
+        color: ${props => props.userLiked ? '#AC0000' : '#FFF'};
         font-size: 22px;
     }
 `;
